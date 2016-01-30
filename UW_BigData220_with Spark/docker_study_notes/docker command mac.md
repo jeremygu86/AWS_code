@@ -1,4 +1,4 @@
-# BASICS How Docker Works
+# BASICS How Docker Works with Chinese Notes :)
 
 Docker is a client-server application. Docker Host --> Docker Clinet + Server (including Containers) 
 
