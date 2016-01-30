@@ -1,0 +1,103 @@
+Welcome back. This is an introduction to HIVE module. In this module we will talk
+about the basic concepts needed to understand one of the big
+data analytics tools, HIVE. We're gonna look into how you can analyze
+massive amounts of data that become part of your big data infrastructure and
+how you can gain deeper insight and different types of ways to
+find meaning from your data. So we're gonna look into
+what does HIVE have to offer as a tool that sits on
+top of the Hadoop framework. And we're gonna learn some
+concepts about how HIVE works, how it interacts with HDFS,
+what its structure is, how does it work and
+interact with the MapReduce. And in general, look into how
+we can take this big data and turn it into some kind
+of actionable insight. What we're going to learn
+in this particular class is we'll look into definition what is Hive. We're gonna cover several different
+topics that we'll talk about what basic Hive components are, what is the
+underlying data model that serves Hive and all of its functionalities. We're gonna look at the underlying Hive
+architecture and we're gonna do some practical hands on assignments with Hive
+and point with some of the data in RVM. So what is Hive? Hive is a data warehouse
+infrastructure tool that allows us to process
+structured data in Hadoop. It resides on top of the Hadoop and
+allows us to summarize big data and make querying and analyzing little bit
+easier than having to set MapReduce job. It was initially developed
+with Facebook and we'll talk a little bit more
+about that in just a minute. But it did later become
+an Apache Software Foundation project, and is now one of the very popular tools that
+is used by many different companies, including companies like Amazon,
+and Netflix, and Google, and Facebook and many others. So why are we thinking about using Hive? We have HDFS and it's great,
+why are we now talking about Hive? Well Hadoop is great for
+large data processing, it's very scalable, it's available,
+but writing Java programs for everything is kind of hard sometimes,
+not everybody's a Java programmer. It could be verbose and somewhat slow,
+and not everybody wants, or can write Java Code. If you're thinking about business
+analysts, they might not be a perfect fit for someone that just wants to do simple
+ETL kind of operations of your data. So, MapReduce is pretty low level,
+not everybody knows it. It does lack some expressiveness,
+it could be hard to program and so, this need emerged for
+higher level data processing language. And the solution was Hive. Hive is a higher level data
+processing language that allows SQL like statements to run on
+underlying Hadoop infrastructure. So Hive supports query expressed
+in SQL-like language and we'll see those are called HiveQL or HQL, which are compiled into MapReduce jobs and
+then executed on the Hadoop. So it does allow MapReduce scripts and
+it does work on top of HDFS. So now that we know why we are talking
+about Hive and why we're using it, we can redefine Hive somewhat, and
+we can say well, Hive is a system for managing and querying unstructured and
+structured data. And we're utilizing the underlying
+MapReduce for execution of our jobs. And we're utilizing HDFS for storage without having to specifically
+write the map and reduce jobs, like we have talked about in our
+previous class and learn how they work. So Hive supports query that
+are expressed in this SQL-like language, and they also allow these
+MapReduce jobs to run. So what are some of the Hive features? Well, it stores schema on the database and
+processes data in HDFS. It is specifically designed for OLAP or
+the Online Analytical Processing. It provides SQL type language for
+querying called HiveQL or HQL and it is familiar, it gives us
+this familiar SQL-like environment. It is fast, scalable and extensible, and by that we mean that it's plugable
+straight into the MapReduce jobs, and you can use the language
+of your choice. It's rich in these user defined data
+types and user defined structures, so you can do all kinds of interesting things
+with this layer that underneath will run MapReduce jobs without ever having
+to get involved at such a low level. It really has this great ability to bring
+structure in various data formats and provide this simple interface for
+even ad hoc querying of your data, maybe analyzing or
+summarizing large amounts of data. By doing all of that, it accesses data files on various
+data store such as the HGFS or HBITS. So what is Hive NOT? What is Hive not gonna do for us? Well, Hive is not
+a relational database and we need to keep that in mind as we start
+working and running these queries. It is designed for online transaction
+processing, and it's very good at that. But we need to pay attention to when we
+deal with such a large amounts of data, how we submit these queries and
+kind of limit the scans and size of the data that it
+actually has to go through. And it is the language for real-time
+queries and real-time updates on our data. So, let's look at a history. It started at Facebook and
+was really originally used as an ETL tool. Facebook used to take an Oracle database, collect a lot of information about user
+behaviors and capture that activity in the dataset and then overnight go and
+update Cron jobs in their database to come up with different
+recommendations for different users. Well as the number of users was growing,
+the number of data was growing and the nightly Cron job just
+weren't doing it anymore. They had over 300 different unique users,
+mostly business analysts and others who needed to run these
+different kinds of jobs, detailed jobs, on the data per month, and
+it was just overwhelming the database. This is what motivated
+the whole evolution of Hive. And so what they started doing is, they
+started coding their own Python entailed jobs, and that's how Hive started. They wrote Hive in order to enable
+all their business analysts and engineers to not have to learn how
+to do MapReduce and learn Java, because that wasn't necessarily what
+they were trying to accomplish, and it was maybe a little too much to ask
+of everybody to be able to implement them. So they were growing from gigabytes
+to terabytes a day an hour and so on. And they had just this crazy
+growth of the data and they needed better tools to be
+able to execute their ETL jobs. So keep that in mind as we go forward and
+we start talking more about Hive. Hive has become an Apache project under
+the Hadoop and is part of the open source, you can find more information
+about it at hive.apache.org. So maybe you're asking yourself,
+what can Hive do for me? Okay that's all really great, I understand
+why maybe Facebook has used it, but why would I wanna use it? Well, it really provides the data
+warehouse infrastructure on top of the Hadoop, which is great. So if you already have your data on in
+HDFS and you're looking into utilizing that infrastructure and you need
+a data warehouse, Hive is your friend. It allows you SQL-like processing. And if you're already familiar with
+database and you know how to do that, and people in your team are familiar with
+SQL statements, it's a perfect fit. And it enables developers to utilize
+custom mappers and reducers. If you would like to go
+into the whole map and reduce in Java code, you're welcome to do
+that, you have an option of that as well. And it does provide tools to enable
+ETL on a very large dataset. So a lot of very interesting things and
+a lot of great applications.

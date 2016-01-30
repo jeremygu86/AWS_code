@@ -1,0 +1,52 @@
+==When to use HBase ==
+
+
+So let's learn a little
+bit more about HBASE. Now we have the very
+basics of what HBASE is. And where it sits in the entire
+framework of the big thing that in the hadoop stack.. So when would we want to use HBASE, now that the know how
+it's different from HDFS. Typically we would want to use it when
+we need random, real-time read and write access to very large
+amounts of Big Data. And by very large we mean billions
+of rows and millions of columns. A lot of different applications have
+these kinds of requirements but some of them that you might think
+about would be web indexing maybe satellite imaging and
+applications of similar nature. So when, additionally are we thinking that
+Hbase might be a great application to use? If we need to perform many thousands
+of operations per second on multiple terabytes and now even petabytes of data,
+we might want to consider using Hbase. Additionally, we want to use
+Hbase when we have patterns. They're pretty simple, and
+they're well known, and we can repeat them on
+large amounts of data. Additionally we have mentioned earlier,
+now that we that Hbase is a distributed, obviously sits on top of very distributed,
+basic system. But it's a column oriented database and
+it's built on top of the Hadoop file system, but I don't know if you
+caught the word column oriented. This will become really important very
+soon when we start looking into how data is organized within Hbase and
+how do we access and index that data. And it's horizontally scalable
+because of its coloumn orientation and because it sits on top of HDFS. Now keep in mind, HBase is not
+a relational database, it is a distributed column-oriented, Database that
+sits on top of the Hadoop. It is sparse. Which means that we have lots
+of NULL values, or empty values. It is very highly distributed. It's something that we often
+call share-nothing architecture. It is persistent, multi-dimensional, and it's really a sorted map of what
+we often call a key-value store. So I don't know if you ever heard
+of the term key-value store, it is pretty common in a lot of
+different computer science applications. But basically,
+what a key-value store means, and it's often in terms of a key-value
+database that we talk about, is key value store, is a data storage
+paradigm that is designed for storing, retrieving and
+managing what we call associated arrays or data structures that are often
+called dictionary or hash. So we have mentioned this
+earlier in our slides. And I just want to make sure that
+everybody understands what that means. For example, we might have three
+different keys here, K1 through K3. And then we might have all
+kinds of different values in our stored part of the data. And that could be a mix of anything,
+it could be actual values, it could be different
+combinations of some other keys. Dictionaries typically contain
+a collection of all kinds of objects or records and in turn they have many
+of these fields of many different characteristics and
+they contain different types of data. For example, here you can see that we
+have 3 different keys and what's really interesting about this, and we'll see this
+later in one of the upcoming lectures, is that the length of the data
+store within the values can vary. This allows us to have a lot more
+flexibility in stored unstructured or structured data in interesting ways.

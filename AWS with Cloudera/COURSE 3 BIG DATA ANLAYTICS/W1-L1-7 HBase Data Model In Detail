@@ -1,0 +1,127 @@
+== HBase Data Model In Detail ==
+
+Welcome back. So far we have talked a lot about
+Big Table, and the technologies and idea in the framework
+underlying the Big Table. And all of the cons and pros, and
+everything that puts that idea to work.
+
+
+Now let's talk about how
+that relates to the H base. So HBase data stores consist of one or more tables very similar to the big data,
+which is indexed by row keys. Data is stored in rows with columns. And rows can have multiple versions just
+like we saw that with the time stamps, we saw in the big table. By default, data versioning for rows is
+implemented with specific time stamps. Columns are grouped into column families, which must defined up-front when
+you actually create that table. Those column families are grouped
+together on the actual physical disk. So grouping with a similar access pattern
+will reduce the overall disk access and increase the performance of our database. The HBase Data Model just like the big
+Table, consists of several Tables. Each Table consists of Column Families. And we know that these roles can
+be assigned to different columns in different cells. HBase has something
+called Dynamic Columns. That just means that column names
+are encoded inside the cell and different cells can have different
+columns, so we have that variable length. So we know that the HBase is
+a distributing data base. What that means is, is it's designed to run on a cluster of
+dozens, possibly thousands of servers. And the result of that it is
+more complicated to stop that than one single RDBMS running
+on maybe one single server. And all the typical problems that we
+encounter with distributed computing come to play just the same in an h
+based distributed environment. So we have the same kinds of
+distributed computed challenges. 
+
+
+And some of those challenges
+are management of the remote processes, being able to lock, how to distribute
+the data, network latency. And number of different aspects that
+influence any kind of distributed system. Fortunately, H base makes use of
+several mature technologies out there, that belong to the whole
+Apache Hadoop ecosystem. And one of those very
+well-known ones is Zookeeper. 
+
+As we will see later, Zookeeper helps us take care of
+a lot of these kinds of issues. So in this figure here, you can see that
+there can be a single HBaseMaster node With a multiple region servers. It is possible to run H base in
+a multiple masters setup as well, but then you typically have
+one single acting master. H base tables are partitioning
+to multiple regions, and each region stores a range
+of the table's rows. And, multiple regions are assigned by the
+master to these multiple region servers. HBase is a column oriented data store,
+which means that columns are stored rather in columns rather than in
+the rows like your typical RDBMS. And this makes certain access patterns
+much less expensive than some traditional row base systems. And we can do a lot of other
+interesting things and be able to access data watch data sets. And for example, in H Base, if there
+is no data for a given column family, just simply does not store anything. And in contrast with
+a relational database, in which you must store either a now,
+or some kind of value explicitly. It still takes storage. In addition to that when you retrieve
+from H base you can only ask for specific column families that you need
+because you can have millions of columns in a given row. You need to make sure that you only ask
+for what you need because remember h base is used for applications that have very,
+very large data. So let's look at the major
+components of H Base. There are three major components
+that we have just mentioned earlier. Region, region server, which typically
+is many slaves and the master. So if we talk about region. We can think of that as
+a subset of tables rows. And you can imagine that as
+a horizontal range partitioning, it is performed automatically. Now we have a region server and often
+times you hear those called the slaves, because they manage data regions and
+serve the data for the reads and writes using a log. The final main piece of this big puzzle
+of the H Base components is a Master. Master is responsible for
+coordinating the slaves. Assigning region,
+detecting specific failures, and then we provide that overall
+administrative function to the HBase. So here we see the logical architecture. Region servers are the software processes,
+and sometimes we call these demons, that we activate in order to store and
+retrieve data from HBase. In production environment each one of
+these region servers is deployed on its own dedicated computer node. When the table grows beyond the
+configurable limit of the HBase system, can take that data and
+automatically split the table and distribute the load to
+another region server. This is called auto-sharing. As tables are split,
+the split become new regions. And region store range
+of key value pairs and each region server manages
+a configurable number of regions. What enables all of this is a zoo keeper. It takes care of all of the HB
+coordination services and the fault recovery. So let's look at the HBase architecture. So, so far we have mentioned the Master,
+the RegionServer, and the Zookeeper. And those are very, very important pieces. However, there's additional components
+that make this architecture work, and those are called the Memory Store,
+the HFile, and WAL. As HBase runs on top of the HDFS. It utilizes this master-slave
+architecture, in which the Hmaster will be the master node, and
+the region servers will be the slave node. When the client sends a write request,
+the Hmaster gets the request and forwards it to the specific region server. The Region Server is a system which
+acts similar to a data node in the HDFS architecture. If you remember from our previous class
+when we talked about how HDFS worked. When Region Server
+receives a write request it directs the request
+to the specific region. Each region stores a set of rows,
+as we have just mentioned before. And rows can be separated in
+multiple column families. And data particular column
+family stored in H store, which consists of this memory store,
+and the set of H files. The memory store keeps track of all
+the logs, and reads, and writes. And operations that have been performed
+within the particular region's server. And from this we can actually imagine it
+acting similar to the main node in Hadoop. So MemStore in the memory
+storage utilizes the in memory storage of the each data note and
+stores the locks. The master server has
+several very important roles. It monitors the region servers in the H
+base clusters, it handles the metadata operations, it assigns the regions, and
+manages the region server failover. Additionally, he oversees load
+balancing across all the regions. So they're equally busy. It manages and
+cleans the catalog tables as well. Clears the WAL, and
+provides a co-processor framework for observing master operations. You should typically have a backup
+master service in every HBase cluster. Because that will increase the failover
+of the actual master server. So we've talked about,
+HBase cluster can be huge. We can have very large amounts of data. And coordinating all of those
+operations of the master servers, the region servers and
+the clients can be a very difficult task. This is where ZooKeeper comes in. ZooKeeper is a distributed cluster on
+services that collectively provide reliable coordination and
+synchronizes all of these services for the cost or
+applications helping HBase run seamlessly. HBase depends on the Zookeeper 100%. By default,
+HBase manages the Zookeeper instance and you really do need to run the Zookeeper
+if you would like to run in HBase. So, to summarize the role
+of the zookeeper, HBase typically comes integrated
+together with the zookeeper. And when you start an HBase,
+the zookeeper instance is also started. Sometimes, you might see an error that
+zookeeper instance is not started, and you have to do that normally. However, in most of the deployments
+of the Hadoop infrastructure, these two come together and
+get started together. The reason is that the zoo keeper helps
+keep track of all the region servers that are available for the H base. And keeps track of how many
+region servers are there. Which one of these region servers
+are holding the data, on which node, and he keeps track of the smaller data
+sets that Hadoop is missing out. It decreases the overhead of the Hadoop, which keeps track of
+most of your metadata. So it makes this process very optimized,
+and it keeps track of all of your metadata. Hence HMaster gets the details of
+the region servers by actually going and contacting the ZooKeeper for
+that information.

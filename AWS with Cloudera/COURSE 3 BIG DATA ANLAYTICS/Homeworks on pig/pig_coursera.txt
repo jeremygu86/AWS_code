@@ -1,0 +1,257 @@
+
+
+================== HW2 Yelp data ==================
+
+Use HDP (hortonworks) becaseu a lot of errors in HW1 with CDH
+
+Working with Yelp dataset sample, from Lesson 2, video 2, Other Pig Commands
+
+In the graded quiz assignment we will first run the script that was presented the video, and then we will add commands to answer a few more questions, The details for adding commands are in the quiz. Here is the comments for running the attached pig script.
+
+1. Check out the Yelp dataset in your cloudera VM:
+
+Try this in Unix
+
+unix > head -1 /usr/lib/hue/apps/search/examples/collections/solr_configs_yelp_demo/index_data.csv
+
+拷贝远程到本地 文件夹folder -r
+cd /usr/lib/hue/apps/search/examples/collections/solr_configs_yelp_demo/
+scp -i "evernote_Nviginia.pem" -r cloudera@ec2-52-23-227-97.compute-1.amazonaws.com:/usr/lib/hue/apps/search/examples/collections/solr_configs_yelp_demo/ out2
+本机拷贝到远程 HDP
+scp -i "/users/wenxiao/evernote_oregon.pem" -r out2/ ec2-user@ec2-54-213-116-12.us-west-2.compute.amazonaws.com:yelp_data/
+
+(it returns the header row)
+
+2. Copy the dataset into HDFS if you are going to run pig -x mapreduce
+HDP进入之后
+cd yelp_data/out2
+记得改permission，在hdp_hw1-revisit.txt中有针对HDP的方法
+
+hdfs dfs -mkdir /user/cloudera
+hdfs dfs -mkdir /user/cloudera/pigin
+hdfs dfs -copyFromLocal index_data.csv /user/cloudera/pigin/yelp_data.csv
+hdfs dfs -ls /user/cloudera/pigin
+
+Don't forget to set up an output folder in hdfs if you use mapreduce
+hdfs dfs -mkdir /user/cloudera/pigoutnew
+
+## delete
+# hdfs dfs -rm -r /user/cloudera/pigoutnew
+# hdfs dfs -rm -r /user/cloudera/input_mod
+
+
+
+3. At unix prompt enter:
+CDH 问题太多了，用hortonworks
+
+@@@无用
+download gradle
+wget https://services.gradle.org/distributions/gradle-2.10-all.zip
+unzip 
+export PATH=/home/ec2-user/gradle-2.10/bin:$PATH
+download datafu
+wget http://mirror.nexcess.net/apache/incubator/datafu/apache-datafu-incubating-1.3.0/apache-datafu-incubating-sources-1.3.0.tgz
+tar xvf apache-datafu-incubating-sources-1.3.0.tgz
+cd apache-datafu-incubating-sources-1.3.0
+gradle -b bootstrap.gradle
+./gradlew assemble
+./gradlew install
+
+@@正解
+find / -type f -name "piggy*"
+# /usr/hdp/2.3.2.0-2950/pig/piggybank.jar
+
+find / -type f -name datafu-pig-incubating-1.3.0-SNAPSHOT.jar
+snapshot不用，可以用下面替换
+find / -type f -name datafu-pig-incubating-1.3.0.jar
+/home/ec2-user/apache-datafu-incubating-sources-1.3.0/datafu-pig/build/libs/datafu-pig-incubating-1.3.0.jar
+
+
+unix > pig -x local or pig -x mapreduce
+4. Pig commands, after any command you could try
+
+-- DESCRIBE relation-name-you-use to see what the schema that Pig is using for the relation.
+
+-- It is very useful as you debug and develop scripts, especially to get the field referencing correct
+
+
+
+
+本机拷贝到远程
+scp -i "evernote_Nviginia.pem" testfile* cloudera@ec2-52-23-227-97.compute-1.amazonaws.com:hw_pig_c3wk3
+scp -i "evernote_Nviginia.pem" word_count.pig cloudera@ec2-52-23-227-97.compute-1.amazonaws.com:hw_pig_c3wk3
+scp -i "evernote_Nviginia.pem" wordcount.pig cloudera@ec2-52-23-227-97.compute-1.amazonaws.com:hw_pig_c3wk3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+================== HW1 ================== 
+-- copy this to a file (or 2 files 1 line each) , if you want to match the input files in the wordcount script
+
+-- you might have these as testfile1 and testfile2 from the previous course
+
+-- BUT TAKE OUT these comment lines. In cloudera vm you can use gedit
+
+A long time ago in a galaxy far far away
+
+Another episode of Star Wars
+
+
+
+
+
+## hw1
+Running Wordcount
+6 questions
+1. 
+1. Get the wordcount script and wordcount sample data from the reading list for this lesson.
+For example, in cloudera VM you can use gedit and cut & paste into a file directly.
+回忆以前的过程
+
+# 登陆aws，建立目录
+mkdir hw_pig_c3wk3
+cd hw_pig_c3wk3
+
+# create data
+制作数据
+echo "A long time ago in a galaxy far far away" >testfile1 
+echo "Another episode of Star Wars" > testfile2 
+
+2. If you are going to run pig in mapreduce use hdfs to copy the data into hdfs.
+
+Also change the wordcount.pig script LOAD command to point to where the data files are. Keep in mind that LOAD might look at all files in a directory, so if you have 2 input files in a directory with other files, you might have to specifiy the filenames with a 'glob'.
+
+Don't forget to set up input files in hdfs if you use mapreduce, for example
+
+hdfs dfs -mkdir /user/cloudera/pigin
+hdfs dfs -copyFromLocal testfile* /user/cloudera/pigin
+hdfs dfs -ls /user/cloudera/pigin
+
+Don't forget to set up an output folder in hdfs if you use mapreduce
+
+hdfs dfs -mkdir /user/cloudera/pigoutnew
+
+## delete
+# hdfs dfs -rm -r /user/cloudera/pigoutnew
+# hdfs dfs -rm -r /user/cloudera/input_mod
+
+Also, don't forget that when you rerun scripts you might have to remove the output files or output directory otherwise you get an error saying file already exists.
+
+3. Add a statement: describe wordfile_grpd
+
+This statement goes after the 'wordfile_grpd' relation is created
+
+4. Execute Pig and run the script. 
+And gather the result from the describe command in step 3. 
+Answer the question: What is the output from the describe statement:
+
+Essentially you can either run it from the Unix command line as
+
+本机拷贝到远程
+scp -i "evernote_Nviginia.pem" testfile* cloudera@ec2-52-23-227-97.compute-1.amazonaws.com:hw_pig_c3wk3
+scp -i "evernote_Nviginia.pem" word_count.pig cloudera@ec2-52-23-227-97.compute-1.amazonaws.com:hw_pig_c3wk3
+scp -i "evernote_Nviginia.pem" wordcount.pig cloudera@ec2-52-23-227-97.compute-1.amazonaws.com:hw_pig_c3wk3
+
+
+远程拷贝到本地（同上）
+！！！必看！！
+unix> pig -x local wordcount.pig
+
+OR, use grunt exec command
+
+unix> pig -x local (or mapreduce) 这个可以！！
+
+grunt > exec wordcount.pig
+
+OR, cut & paste into grunt
+
+grunt > pig -x local (or mapreduce)
+
+Note: pig by default only saves log files if there is an error, so watch the screen output. Or, to save standard output run it as , for example
+
+pig -x local wordcount.pig > mylog_output
+
+wordfile_grpd: {group: chararray,wordfile_flat: {(wordin: chararray)}}
+
+wordfile_grpd: {group: chararray, {(wordfile_flat:wordin: chararray)}}
+
+wordfile_grpd: {group: chararray,wordfile_flat: (wordin: chararray)}
+
+wordfile_grpd: {group: chararray,wordfile_flat: {t:(wordin: chararray)}}
+2. 
+
+Add a statement to dump the contents:
+
+DUMP wordfile_grpd.
+
+What is the correct line that you see for the word far?
+
+(far,{(far,far)})
+
+(far,((far), (far)))
+
+({(far),(far)})
+
+(far,{(far),(far)})
+3. 
+
+In the following LOAD command:
+
+wordfile = LOAD '/user/cloudera/pigin/testfile*'
+
+USING PigStorage('\n') AS (linesin:chararray);
+
+Which is the relation and field name
+
+wordfile is the relation, linesin is the field name
+
+linesin is the relation and wordfile is the field name
+
+the chararray is the relation and the field name is linesin
+4. 
+
+If you enter the command in grunt> DESCRIBE wordfile
+
+You get the following result: > wordfile: {linesin:chararry}
+
+Which of the following is correct explanation of this result?
+
+The relation name followed by fields
+
+The relation name followed by a bag of tuples
+5. 
+
+In the statement
+
+wordflat = FOREACH wordfile GENERATE FLATTEN(TOKENIZE(linesin)) AS wordin
+
+What will happen to the bag of words?
+
+Tokenize will remove the bag level
+
+Flatten will remove the bag level
+6. 
+
+Pig is a dataflow language. What does that imply about each statement in a Pig script?
+
+Each statement in PIG creates a new relation, which represents a new set of data.
+
+Each statement creates a relation that can be used like a variable
+
+Each statement performs calculations, assigns variables, or executes a flow control.
+6 questions unanswered

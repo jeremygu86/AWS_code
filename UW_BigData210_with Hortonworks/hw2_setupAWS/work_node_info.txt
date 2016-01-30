@@ -1,0 +1,60 @@
+ec2-54-172-146-191.compute-1.amazonaws.com		10.0.0.112		ip-10-0-0-112.ec2.internal		ambari
+ec2-54-174-89-10.compute-1.amazonaws.com		10.0.0.115		ip-10-0-0-115.ec2.internal		nn1
+ec2-54-175-108-194.compute-1.amazonaws.com		10.0.0.109		ip-10-0-0-109.ec2.internal		nn2
+ec2-52-91-163-29.compute-1.amazonaws.com		10.0.0.110		ip-10-0-0-110.ec2.internal		data1
+ec2-54-165-238-55.compute-1.amazonaws.com		10.0.0.114		ip-10-0-0-114.ec2.internal		data2
+ec2-52-91-98-70.compute-1.amazonaws.com		10.0.0.113		ip-10-0-0-113.ec2.internal		data3
+ec2-54-174-254-216.compute-1.amazonaws.com		10.0.0.111		ip-10-0-0-111.ec2.internal		data4
+
+
+
+
+ec2-54-172-146-191.compute-1.amazonaws.com
+ec2-54-174-89-10.compute-1.amazonaws.com
+ec2-54-175-108-194.compute-1.amazonaws.com
+ec2-52-91-163-29.compute-1.amazonaws.com
+ec2-54-165-238-55.compute-1.amazonaws.com
+ec2-52-91-98-70.compute-1.amazonaws.com
+ec2-54-174-254-216.compute-1.amazonaws.com
+
+ === ec2-54-172-146-191.compute-1.amazonaws.com ===
+ip-10-0-0-112.ec2.internal
+
+=== ec2-54-174-89-10.compute-1.amazonaws.com ===
+ip-10-0-0-115.ec2.internal
+
+=== ec2-54-175-108-194.compute-1.amazonaws.com ===
+ip-10-0-0-109.ec2.internal
+
+=== ec2-52-91-163-29.compute-1.amazonaws.com ===
+ip-10-0-0-110.ec2.internal
+
+=== ec2-54-165-238-55.compute-1.amazonaws.com ===
+ip-10-0-0-114.ec2.internal
+
+=== ec2-52-91-98-70.compute-1.amazonaws.com ===
+ip-10-0-0-113.ec2.internal
+
+=== ec2-54-174-254-216.compute-1.amazonaws.com ===
+ip-10-0-0-111.ec2.internal
+
+=== ec2-54-172-146-191.compute-1.amazonaws.com ===
+10.0.0.112
+
+=== ec2-54-174-89-10.compute-1.amazonaws.com ===
+10.0.0.115
+
+=== ec2-54-175-108-194.compute-1.amazonaws.com ===
+10.0.0.109
+
+=== ec2-52-91-163-29.compute-1.amazonaws.com ===
+10.0.0.110
+
+=== ec2-54-165-238-55.compute-1.amazonaws.com ===
+10.0.0.114
+
+=== ec2-52-91-98-70.compute-1.amazonaws.com ===
+10.0.0.113
+
+=== ec2-54-174-254-216.compute-1.amazonaws.com ===
+10.0.0.111

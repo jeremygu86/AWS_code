@@ -1,0 +1,1 @@
+"use strict";define("bundles/programming/data/filesWorkspace",["require","exports","module","bundles/programming/api/filesWorkspaces"],function(require,exports,module){var e=require("bundles/programming/api/filesWorkspaces");module.exports=e.get});

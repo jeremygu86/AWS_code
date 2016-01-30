@@ -1,0 +1,73 @@
+Homework Course2 Week5 Spark
+
+
+## bigwhite
+sshpass -p "cloudera" scp -r -i "evernote_Nviginia.pem" sent_to_vm/. cloudera@52.23.211.32:hw2_c2wk5_spark
+
+
+
+## coursera
+sudo easy_install ipython==1.2.1
+Every time you need to open the pyspark shell, open a terminal and type:
+PYSPARK_DRIVER_PYTHON=ipython pyspark
+
+
+
+# File: assignment1
+## Python code
+
+## For fileA
+
+def split_fileA(line):
+    # split the input line in word and count on the comma
+    list_string = line.split(",")
+    # turn the count to an integer
+    out = list_string[0],str(list_string[1])
+    return out
+# line = "able,991"
+# split_fileA(line)
+
+## For fileB
+
+def split_fileB(line):
+    # split the input line into word, date and count_string
+    import re
+    # line = 'Dec-15 able,100'
+    # line.split(","|" ")
+    out = re.split(' |,',line)
+    word = out[1]
+    date = out[0]
+    count_string = str(out[2])
+    return (word, date + " " + count_string)
+
+#line = "able,991"
+#split_fileA(line)
+
+# lineB = 'Dec-15 able,100'
+# split_fileB(lineB)
+fileA = sc.textFile("/user/cloudera/input_join/join1_FileA.txt")
+fileB = sc.textFile("/user/cloudera/input_join/join1_FileB.txt")
+
+fileA.collect()
+fileB.collect()
+
+fileB_data = fileB.map(split_fileB)
+fileA_data = fileA.map(split_fileA)
+fileA_data.collect()
+fileB_data.collect()
+
+fileB_joined_fileA = fileB_data.join(fileA_data)
+fileB_joined_fileA.collect()
+
+
+
+
+
+## result
+
+(u'actor', (u'Feb-22 3', '22'))
+
+
+
+# File: assignment2
+## Python code

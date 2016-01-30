@@ -1,0 +1,1 @@
+"use strict";define("bundles/phoenix/lib/viewModel",["require","exports","module","backbone","bundles/phoenix/lib/mixin","js/lib/fsm"],function(require,exports,module){var Backbone=require("backbone"),i=require("bundles/phoenix/lib/mixin"),n=require("js/lib/fsm"),e=Backbone.Model.extend();i(e.prototype,n.FiniteStateMachine),module.exports=e});

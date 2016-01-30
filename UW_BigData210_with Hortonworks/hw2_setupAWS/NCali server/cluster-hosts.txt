@@ -1,0 +1,9 @@
+ec2-54-193-23-215.us-west-1.compute.amazonaws.com
+ec2-54-193-43-222.us-west-1.compute.amazonaws.com
+ec2-54-193-42-230.us-west-1.compute.amazonaws.com
+ec2-54-193-4-52.us-west-1.compute.amazonaws.com
+ec2-54-193-21-168.us-west-1.compute.amazonaws.com
+ec2-54-193-65-36.us-west-1.compute.amazonaws.com
+ec2-54-193-73-98.us-west-1.compute.amazonaws.com
+ec2-54-193-72-148.us-west-1.compute.amazonaws.com
+ec2-54-193-72-100.us-west-1.compute.amazonaws.com

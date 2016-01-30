@@ -1,0 +1,29 @@
+Opening File: cluster-hosts.txt
+
+=== ec2-54-193-42-240.us-west-1.compute.amazonaws.com ===
+10.0.0.214
+ip-10-0-0-214.us-west-1.compute.internal
+
+=== ec2-54-193-45-35.us-west-1.compute.amazonaws.com ===
+10.0.0.215
+ip-10-0-0-215.us-west-1.compute.internal
+
+=== ec2-54-193-45-214.us-west-1.compute.amazonaws.com ===
+10.0.0.213
+ip-10-0-0-213.us-west-1.compute.internal
+
+=== ec2-54-193-51-123.us-west-1.compute.amazonaws.com ===
+10.0.0.130
+ip-10-0-0-130.us-west-1.compute.internal
+
+=== ec2-54-193-51-137.us-west-1.compute.amazonaws.com ===
+10.0.0.131
+ip-10-0-0-131.us-west-1.compute.internal
+
+=== ec2-54-193-51-165.us-west-1.compute.amazonaws.com ===
+10.0.0.132
+ip-10-0-0-132.us-west-1.compute.internal
+
+=== ec2-54-193-52-83.us-west-1.compute.amazonaws.com ===
+10.0.0.133
+ip-10-0-0-133.us-west-1.compute.internal

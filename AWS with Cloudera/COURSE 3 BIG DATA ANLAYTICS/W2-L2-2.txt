@@ -1,0 +1,173 @@
+Welcome back. So let's talk about HIVE commands. The whole reason we have HIVE is
+that we didn't want to have to write the map reduce jobs for every single ETL, or querying job that we
+would like to execute. So we know that underneath the hood
+HIVE will run my produce jobs, but we don't have to worry about it. So let's look at what kinds of
+interfaces do we have to HIVE and how can we use this to interact. So we mentioned the command line
+interface, the web interface or the hue, and
+the Java database connectivity. We're gonna cover the first
+two in this lecture. So we've talked about
+several different commands. And some of the major commands
+that HIVE enables us to use is commands are related to the databases. So we have a set of databases and
+HIVE commands help us take care of, taking care of the conference
+resolution and things like that. Then we have tables which are typically
+a set of rows and have some columns. Then we have a set of rows,
+which are kind of a single record. And they have some column information in
+there and columns that each one of them has the value type for
+a single value that's stored in there. So very similar concept just that we do
+have in RDBMS and all of these concepts that we are adopting from RDBMS to make
+it more familiar and easier, to use. So the major table
+commands are show table, create table, alter table, and drop table. Very similar, very straightforward. So if we were to create a table,
+we can name this table mytable. And we might have two
+different variables in there. One called my integer that's of
+integer type and, a string name bar. We can partition that data by the
+particular piece of information as well. We can show tables and
+we can just use a star, everything mine. So if I had my table, and
+my table one, and my table two. It would show me information
+about all of those tables. If you remember,
+we mentioned this earlier, HIVE table is stored in HDFS
+directory inside of Hadoop. Now we could alter those tables as well,
+we could add new columns, or we can just drop the table and
+lose all the information. So we have to be careful when we do that. So if we were to create a table,
+we can create a, HIVE allows us a number of different DTR,
+data definition commands. And they're similar to SQL. So if we decide to create the table,
+we can put a name of that table, which in our case is my people. And we can put the parameters that
+describe the table structure. That's going to be created and in this
+particular case we have an ID and a name. So we only had two columns that we
+are describing in this particular table that we're creating, and
+we're partitioning it by the date. So schema is known at the creation
+of the time and partitioned tables have the sub directories, and
+one for each one of the partitions. Hive query language allows us
+to do more things with the data. So we can insert the data,
+we can overwrite the table, and then we can do joins. And Hive is quite powerful in the number
+of different joins that you can do and the way it optimizes those joins. So if we have a need to
+join two different tables. And for example,
+here we have table C1 and C2. We can join them on a particular
+attribute value and make that join by using just
+SQL act commands through Hive. Another interesting thing that
+Hive allows us to do is to be able to format the rows
+in different formats. We can specify there right
+when we create the table. So for example, here,
+before creating the table mypeople. I can decide the row format will be and
+in this particular case. I can say,
+what are the deliminated fields? How are they terminated by? And what are we terminating the lines by? So we have two different ways
+we can load the data into HIVE. We can load the data into HIVE utilizing
+HDFS, and we can load that data into the resident HDFS folder, or we can
+load the data into our local file system. And you see the examples of both here. So, if you have, for example, web blogs, and you wanted to load that into hive,
+into your data warehouse. It would be very advisable
+to put some partitions and you can specify these partitions at the
+end, in the process of loading the data. So let's say you had a whole bunch
+of web blogs and you're loading them into the table called mypeople and you're
+partitioning by the particular date. If you want to create buckets,
+to bucket the data in advance, we can specify that as you're
+creating the table as well. It's very important to set this
+hive.enforce.bucketing property to true depending on which version of
+the Hadoop system you are using. If you don't specify the buckets and use the table sample
+command on the random data. A full data scan will be
+preformed on non bucketed columns. And if you can imagine if
+you have a lot of data, let's say we have a ton of web blogs. That could take a lot of time and
+might not be a very fast connect. So you can create these buckets by adding
+clustered by at the end of the statement. And it's very important for sampling data, especially when you have
+very large data sets. And you really need to
+put them into buckets. So for example, here, we are trying
+to select the minimum cost for mysales database. As I said, it is very important for
+sample to have large data sets. So for example,
+if we had a very large amount of data, we might want to do something like this. We might want to randomize
+data into 32 buckets, like we did in this particular statement. And pick the data that ended up in the
+bucket number ten, and call that a sample. So we can deal with these very large data
+sets in a more intelligent and faster way. Now, OnTime offers views as well. They're a very similar
+concept to regular SQL. They're virtual tables, they're defined in select statements
+just like we do in the SQL. And when we create it, they do not run,
+but they are stored in the Metastore. We can examine them by using
+the command show table, and we can modify and examine and
+query these types. Just keep in mind that there
+the views are read only and do not affect actual tables in HDFS or co-dependent, depending on
+where you're storing the data. So one of Hive's strongest features is
+the ability to create the queries that join some of the different tables, and
+we mentioned it a little bit earlier. But joins can be extremely complex. And they can be very difficult to
+implement in the map and reduce. And in our simple hive user interface we
+can actually specify that with simple, select join or on specific customer ID. However, if you were to
+implement this using Java, you'll probably have 60 or
+more lines of code. And it would be quite
+difficult to do that. So, for example,
+if we wanted to count the frequency of the words that we collected in
+a bunch of different Twitter feeds. We might need to join a couple
+of tables to do that. So join is a clause that's used for combing specific fields
+from two different tables. By using the values that are common
+in each one of the staples. So you can join on the particular,
+in our case customer ID. And it's used to combine
+records from these two or sometimes more tables in the database. And it's extremely similar to join and
+SQL. We can create tables,
+and we can drop tables. So drop table is very similar. A drop table at mycustomers. We'll drop that table and
+the information will be lost. We can delete partitions of the table
+as well by using the alter table drop partition command. And we can do a lot of
+other different commands. So instead of just listing them, maybe it would be nice to just
+go through a couple of examples. And walk through the steps of creating
+the table, loading data into table, querying the loaded data, and then
+maybe at the end, deleting that table. So we're gonna use Hive
+within our Quickstart VM. And I'm just gonna walk through
+a couple of steps here. Later on, in our next figure, I will show you how to do that
+within the VM environment. But for now, let's just open the shell. And if you open the terminal and you just type hive,
+the prompt like this should appear. Now, if you go and start the quick VM and, remember what we did
+in our previous class. We did a lot of different
+data movements and creation of the data as we walked through
+the tutorial that came with Avia. If you remember, the name of
+that data set was called DataCo. And if you haven't taken our
+previous class we go through the Caldera QuickStart VM Tutorial and
+walks through the first two parts to understand and
+bring the data needed for our exercises. If you have already done that
+you can just open Hue and you can continue working with us as is. So, if you remember last time we actually
+took some data from a SQL database. We moved it into HDFS, and
+we exported it first into the Avra files, stored it into HDFS, and then actually
+moved it into a hot warehouse. And we called that, we called it schema, really because we don't predefine
+schema for the hot data warehouse. But as we read the data, the schema is
+created at the time of reading the data. That gives us the flexibility to
+bring different lines of rows and columns and different formats of the data. So, these are the steps
+that we did last time. And we copied and pasted a whole bunch of
+different commands, but now we're going to actually go into them and understand
+what specifically they are doing. So, when we got to the data,
+we copied the data into the HTFS and
+then we moved it into a Hadoop and then into a Hive data warehouse. We were able now to open up a Hive
+interface and query that data. So we walked through
+a bunch of different steps. And in this particular step here,
+we actually study creating tables. So what did we specifically do there? Well, we used the create table command. The create external tables,Categories
+in this particular case was stored as AVRO files. We put them into a particular
+location on our hdfs and we set some properties for
+that particular table. So we use Hive data warehouse to
+take the files that we copied into hdfs in this particular locations. And read that into Hive warehouse
+by creating external table and calling it categories. Then we repeated that with customers and products and
+other aspects of our data code store. We ended up doing this for
+each one of the categories, customers, departments,
+order items, orders, and products. So we repeated the same create
+table statement numerous times and we created a table for
+each one of these six categories. So now if you go into the queue
+within your quickstart VM, you can open the queue and
+go into the query editor. If you click on hive there,
+you can now start asking all kinds of interesting questions from the data
+we have stored in our warehouse. Very simple one is show tables, or
+select everything from customers and try to see what is really stored in
+this data, and how does it look. So you could run some
+more complex queries, and this is a couple of examples
+from the Caldera quick start VM. Where in this particular one we
+are trying to find the top salaries for about $80,000 of all the customers that
+were in there that were from the 2007. So you can select from the description and
+the salary table. From 2007 where the salary
+was greater than $80,000. Now we can order those in
+the decreasing order and here we're only admitting 1000 records,
+because we don't want everything we wanna limit just to
+see how many of them are there. Now we can grow this into
+a more complex query. And we can do some joins and we can say. We would like to know what is the salary
+gross, sorted from 2007 to 2008. So in this case, because we
+are looking at two different years, we're going to have to actually join and
+we're joining two different tables. We're joining the '07 and
+'08 salary tables. And we're joining that on the particular
+attribute called code, and then we're ordering that by the decreasing order,
+again limiting on the thousand salaries. Another interesting example,
+is job loss among the top earners in 2007. And here, we are sampling,
+we are doing another join, but now we are actually
+looking at a WHERE clause. It's a little bit more complex. Again, ordering by decreasing order and
+limited the number of queries produced. So we can pose all kinds
+of interesting questions, express those in our SQL like language and retrieve the information fairly quickly. So let's now go back
+into the Quickstart VM. And in our next video we're gonna
+look into how we can play around with this data. We're gonna start our, we're gonna
+go back to our Quickstart VM and do some more exercises and
+examples of utilizing Hive. See you soon.

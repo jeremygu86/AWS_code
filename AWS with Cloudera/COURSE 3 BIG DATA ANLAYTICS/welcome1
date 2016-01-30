@@ -1,0 +1,84 @@
+Hi. Welcome to the third course in
+the big data specialization. In this course you will learn the tools
+and techniques to access, manipulate, and process big data. The tools are a higher level abstraction
+from the MapReduce framework, and therefore support more real-time,
+ad hoc, exploratory analysis. 
+
+In this course you will learn how to
+use several of the tools in the Hadoop ecosystem, such as HBASE, Hive,
+Pig, Splunk, and Spark SQL. 
+
+And in fact, several tools will leverage SQL-like features to
+make it more accessible to users. After all, SQL is a widely used language
+for doing database and query analysis. 
+
+Let's start by recalling the big picture. You have lots of data, and
+you wanna find something meaningful. And hopefully,
+you will gain insight into your data, which helps lead to inferences,
+decisions, and actions. And in other words, we wanna analyze our
+data and gain something, some insight, gain some knowledge, or
+get some interpretations. And ultimately,
+turn that into decisions and actions. 
+
+
+In this course we focus on basic analysis. In the next course we focus
+more on modeling base analysis. The assignments will take you up to
+the point where domain knowledge can step in and help make decisions. We might say that, essentially,
+doing analysis is searching for meaningful things, such as interesting observations,
+taking summaries, and so forth. And to search for meaningful things, there are certain kinds of
+support that the analyst needs. The analyst wants to retrieve data easily,
+have functions for transforming and summarizing data, and
+tools to help explore and query data. In the context of big data,
+we don't get this directly at MapReduce. It means that we need tools
+to help us use Hadoop. And that's what we'll be teaching in this
+course, the tools, and techniques for these tools, and
+how they work to help us do analysis. Let me quickly review some of
+the ideas from the previous course. The Hadoop ecosystem comprises
+a set of related and complementary programs to help process and
+manage big data. In this course, we're gonna focus on a few of the tools
+that are especially useful for analytics. In part because they're widely used,
+they've been around for a while, and they cover a range of architectural
+methods to build on top of Hadoop. Let me remind you of
+the main idea about Hadoop. Recall that the Hadoop distributed file
+system partitions data across clusters. You, as the developer,
+programmer, mapper, and reducer. The mapper often takes the form
+of relatively simple functions to map data into key value pairs. Hadoop shuffles and regroup keys, as well
+as handling the parallelization logistics, and the reducers consolidate the results. HDFS and MapReduce can be used together
+to help process massive data sets, as long as you can fit your
+programs into that framework. By design, Hadoop was made without
+an emphasis on schemas and indexing, and to make applications
+scalable, fault tolerant, and provide fast loading processing. But the contrary is that some
+programming can be required, and if data doesn't have structure,
+it's not easy to use it sometimes, or not easy to use that structure. And Hadoop is not designed to
+do transactional processing, like traditional databases. So we can look at this, comparing it to traditional databases
+from a functional point of view. Hadoop is generally more appropriate for
+different situations, especially when you want to process
+unstructured data that is growing. You might need to make a full
+pass with the data and do something more flexible than SQL,
+for example. But the growing trend for a while now
+is that the ecosystem around Hadoop is filling in the gap between
+these kinds of systems. In some sense, the Hadoop tools
+are moving into the area that traditional database systems have been occupying for
+a long time. But they're not necessarily mutually
+exclusive, but there's some overlap and they can coexist. The tools, in a sense, are adding layers of code to do
+things like query processing, use schematic information, or help manage
+and optimize the Hadoop environment. In this course, you will learn
+about several tools and details. These tools are well established,
+and they're somewhat mature, and relate to Hadoop in different ways. So I just want to present a quick view
+right now to see how they fill in the space of functional needs. HBASE uses HDFS and MapReduce,
+and organizes data by column. It's related to the so
+called Bigtable system from Google. Hive uses a metastore to hold on to schema
+information about fields in the HFS data. So it provides some kind of DBMS
+functionality and an SQL-like interface. Pig provides a scripting language
+that is more flexible than SQL, and designed to directly use MapReduce. Spark is a more general engine for programming with an interface into HDFS,
+and replaces MapReduce with a different set
+of mapping, gathering type of functions. Splunk is something that
+is a bit more vertical. It's another platform, but it's focused on
+machine-generated data, such as user logs, web logs, system data. And the data can be streaming,
+and the synopsis and the reporting can be automatic. This is an example of a tool that is built
+around a particular application, and it uses Hadoop, but
+it can work with other data sets as well. That's the end of
+the introduction to this course. The modules in the course are going
+to go over particular tools. However, before we jump into the details
+of the tools, it's worth laying out a bit of groundwork about analysis,
+which I'll do in the next video.

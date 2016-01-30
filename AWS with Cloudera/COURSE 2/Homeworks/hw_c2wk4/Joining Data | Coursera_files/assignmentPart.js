@@ -1,0 +1,1 @@
+"use strict";define("bundles/programming/models/immediate/assignmentPart",["require","exports","module","backbone"],function(require,exports,module){var Backbone=require("backbone"),e=Backbone.Model.extend({defaults:{id:null,partId:null,itemId:null,courseId:null,title:null,order:null,maxScore:null}});module.exports=e});

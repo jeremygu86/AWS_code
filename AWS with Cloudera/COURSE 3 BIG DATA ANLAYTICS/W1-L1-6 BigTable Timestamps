@@ -1,0 +1,40 @@
+== BigTable Timestamps ==
+
+
+So the third dimension of
+the BigTable is timestamps. So we looked into timestamps and what they
+can, what they can enable our data to do. We looked at each cell can hold
+multiple versions of the data. And these timestamps allow us to manage
+and understand what is a more recent or older version of that particular value
+in the particular cell of the table. So we allow cells to hold
+multiple versions of the data. And timestamps can then be
+set by either Bigtable or client application and do a little bit
+of what we call garbage collection and the cleanup and only hold the most
+recent values of the data. Data is stored so
+that new data are faster to read, so we will get what's the most
+recent piece of information, cuz that might be the one we're gonna
+go read the fastest and the soonest. So if we go back to our chart,
+we can see that now, not only do we have, that we have tablets
+which put numerous rows together. We have families of columns which helps
+us put this data together as well, and then we have this third
+dimension of the timestamps. And we can see that we go from the most
+recent all the way back to as far as we allow our system to go and specify how far
+back in time we want to keep our data. So we have talked a lot about Bigtable and
+HBase, almost interchangeably. So what is actual difference of going
+from the Bigtable into the HBase, and why are we using HBase as a new
+application setting on top of Hadoop? Well, we know it's open source. We know it has great
+integration with Hadoop. And it really doesn't have
+any real indexing, but it is able to do automatic partitioning. It scales linearly and
+automatically as you add new nodes, which is a great feature. The scalability's just unbelievable. It works on top of commodity hardware, just like the rest of our architecture,
+Hadoop infrastructure and framework, and it has built-in fault
+tolerance and batch processing. So we have talked about
+the Bigtable data model, and HBase data model is basically the same. So just to quickly review,
+we have strings that represent keys for rows, columns, and the timestamps. We know that we can support lookups,
+inserts, and deletes of all of these
+different transactions. And we know that we can maintain, that we have to maintain this
+data in lexicographic order for faster lookup, and
+we use groupings of both columns and rows to speed up the access and
+manipulation of the hard data. We know that we can put
+columns into the families, and rows into what we call tablets. So here we can see that different datasets
+can be represented in this fashion, rows, columns, tablets,
+families of columns and the timestamps.

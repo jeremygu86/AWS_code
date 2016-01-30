@@ -1,0 +1,60 @@
+
+
+==Rows and Columns In BigTable==
+
+
+So now that we know what the three
+major dimensions of the Bigtables are, the rows and columns and the timestamps,
+let's look at each one of them separately. 
+
+So first let's take a look
+at the rows in Bigtable. Table is a collection of rows. Pretty simple concept. BigTable maintains its data in
+alphabetical order by row key. And the row key of table are any kind of
+arbitrary strengths as you can see here. And rows are the unit of
+transactional consistency. This is what gives us that key
+that we can address that table. W
+
+hen we have a lot of these kinds of rows, we might wanna consider grouping
+these into what we call tablets. Tablets are distributed and
+they're stored close to each other. And they are typically several
+rows grouped together. And if you, when we start looking
+at the physical underlying model of the BigTable and the HBase, we're gonna
+see that actually they're typically stored close to each other for faster lookup. So this is how it would work. 
+We have rows and we have columns, and then
+we have kind of the depth of these tables, because we can have different timestamps
+for each different value in our table. And you can see that we can group
+these rows into the tablets. And now we'll talk a little
+bit about the columns too and see how we can group them as well. 
+
+So now that we know how rows work,
+let's look into columns. 
+
+We mentioned earlier that HBase and BigTable are called
+column-oriented stores. And that means that the most
+basic unit of HBase is a column. Each column could have multiple versions. We've just seen a minute ago that you
+have these timestamps and you can have different versions of your data for
+different, for each one of the timestamps. So these distinct values
+are contained in separate cells. And each one of these columns can be put together into something
+that we'll call families of columns. One or more columns can create a row
+addressed uniquely by row key. And a table is a collection
+of different rows. If we're addressing each one
+of the columns separately, we would use a syntax like this. We would look at which family
+of columns that might belong and then put some kind of a qualifier that
+tell us which family it is that this particular column belonging to. So we have mentioned that we can take
+a bunch of different columns that should, we think should be together and
+group them into a family of columns. The column families are typically based on
+semantical boundaries between the data, and they're usually stored together
+in a low-level storage called Hfile. And we'll talk in more depth
+about Hfile as soon as we get to the underlying physical model and the architecture that supports
+the functionalities of HBase. So to summarize keys and columns
+looks a lot like something like this. Here is what we have keys of the rows. And then we might have some
+information about personal demographics of our customers
+professionally, maybe some personal data. And we can take these kinds
+of related information and put them into the families of columns. Each column family then consists of one or
+more columns. Here is another example of these
+kind of multi-versioned tables that HBase of BigTable is
+able to handle and maintain. You can see that one column can
+have variable number of columns and can have a variable number of timestamps
+if the data changes this far. Typically they are very sparse, so we have
+a, we typically have a lot of null values, and cells within the column
+can be sorted physically for a better retrieve on faster lookup.

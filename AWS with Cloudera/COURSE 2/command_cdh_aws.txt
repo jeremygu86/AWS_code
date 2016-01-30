@@ -1,0 +1,116 @@
+### EC2 AMI
+https://www.coursera.org/learn/hadoop/discussions/Wn46MXfREeWb4g4qCdqdUQ/replies/FIzSLXfkEeWb4g4qCdqdUQ
+ 	
+ ## associate Elastic IP
+ http://ec2-52-6-223-34.compute-1.amazonaws.com:8888/
+ 
+ 
+ user/pass 
+ cloudera/cloudera
+
+ 
+ ssh -i "evernote_Nviginia.pem" root@52.6.223.34
+
+ 
+ /home/cloudera/
+ 
+ ssh -i "evernote_Nviginia.pem" root@52.6.223.34
+ scp -i "evernote_Nviginia.pem" root@52.6.223.34:/home/cloudera/wordcount.txt /users/wenxiao/documents/d/dropbox/bigdata/aws_cdh/assignment1_out.txt
+
+
+touch testfile.txt	create an empty file name testfile.txt
+echo "Hello world in HDFS" >> testfile.txt	display the line of text that is being inserted into the newly created testfile
+cat testfile.txt	read and print out the file
+hdfs -dfs -put testfile.txt	put the file into HDFS
+
+
+
+
+ssh -i "evernote_Nviginia.pem" root@52.6.223.34
+
+
+
+
+
+AL-MZ High availabilty
+
+
+## OR S3 VM Import/Export Prerequisites (not try)
+ https://www.coursera.org/learn/intro-to-big-data/module/MZNe5/discussions/oRDOqXUeEeWWpw7gge8ZbQ
+ http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/VMImportPrerequisites.html
+ 
+ 
+ 
+ 
+## Official install 2015/11/06
+
+use redhat 6.5 ##!!!!!
+
+CDH 4.X
+http://www.cloudera.com/content/www/en-us/documentation/archive/manager/4-x/4-8-6/Cloudera-Manager-Installation-Guide/cmig_install_on_EC2.html
+ 
+CDH 5.X
+http://www.cloudera.com/content/www/en-us/documentation/manager/5-1-x/Cloudera-Manager-Installation-Guide/cm5ig_install_on_ec2.html
+
+
+0. master node:
+
+
+ssh -i "evernote_Nviginia.pem" ec2-user@52.91.79.67
+ec2-52-91-79-67.compute-1.amazonaws.com
+
+
+
+ec2-52-23-240-126.compute-1.amazonaws.com
+
+ssh -i "evernote_Nviginia.pem" ubuntu@52.23.240.126
+ install the packages
+ 
+  wget http://archive.cloudera.com/cm5/installer/latest/cloudera-manager-installer.bin
+  
+sudo su
+chmod +x cloudera-manager-installer.bin
+./cloudera-manager-installer.bin
+
+
+  http://ec2-52-23-240-126.compute-1.amazonaws.com:7180
+ admin:admin
+ 
+ service cloudera-scm-server restart
+ 
+ 
+1. Set up work nodes
+ # give permissions 1/4
+ chmod u+x ./testHosts.sh
+ 
+
+ 
+ # 2/4 http://stackoverflow.com/questions/17131249/how-to-solve-bad-interpreter-no-such-file-or-directory
+ perl -i -pe 'y|\r||d' testHosts.sh 
+ 
+ # test 3/4
+ ssh -oStrictHostKeyChecking=no -i "evernote_NCalifornia.pem" ec2-user@ec2-54-172-146-191.compute-1.amazonaws.com "hostname -f"
+ 
+ ssh -oStrictHostKeyChecking=no -i "evernote_Nviginia.pem" ec2-user@ec2-54-172-146-191.compute-1.amazonaws.com "hostname -f"
+ 
+ # Run 4/4
+ ./testHosts.sh cluster-hosts.txt "evernote_NCalifornia.pem"
+ ./testHosts.sh cluster-hosts.txt "evernote_Nviginia.pem"
+
+## Output: all_host_info.txt and csv (copy paste)
+hosts file format:
+internal internal_dsn name
+replace spaces
+
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 

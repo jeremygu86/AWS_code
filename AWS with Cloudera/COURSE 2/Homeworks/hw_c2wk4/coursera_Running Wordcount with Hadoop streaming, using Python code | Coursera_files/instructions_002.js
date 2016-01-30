@@ -1,0 +1,1 @@
+"use strict";define("bundles/programming/api/immediate/instructions",["require","exports","module","bundles/phoenix/lib/apiWrapper"],function(require,exports,module){var e=require("bundles/phoenix/lib/apiWrapper");module.exports=e("/api/onDemandProgrammingImmediateInstructions.v1/",{type:"rest"})});

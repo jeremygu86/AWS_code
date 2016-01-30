@@ -1,0 +1,53 @@
+Hello, everybody. Welcome back to
+the Big Data Analytics class. 
+
+
+In this lecture we're gonna provide an introduction to HBase.
+
+HBase is a data model that's very similar to Google's Big Data Table.
+And it's designed to provide a quick random access to very large amounts of data. 
+
+In this module, we're gonna look at different aspects of HBase. 
+= We're gonna look into what HBase is. 
+= How does HBase relate to HDFS? If we already have HDFS.
+= Do we really need HBase? And we'll see the answer to that.
+= What is HBase Data Model? 
+= And then what is the physical model description 
+= What's the underlying architecture they are holding?
+= And then we will start using HBase in practice. 
+
+
+So what is HBase? HBase is a distributed column-oriented
+data store built on top of HDFS. If you look into the actual
+Apache definition of HBase, you can see that they define
+it as a Hadoop database, a distributed, scalable,
+what we often call a big data store. And if you dig a little deeper
+at the Apache HBase website, you can see that they talk about HBase
+being an open source project whose goal is to provide storage for the Hadoop
+distributed file system computing. I always like to look at Wikipedia. 
+And so Wikipedia says HBase in
+an open source, non-relational, distributed database modeled after
+Google's BigTable and written in Java.
+
+So we're gonna go through a lot
+of these aspects of HBase and learn in more details what
+does that actually mean. However, in a big picture, we know
+that it's still part of this Hadoop ecosystem that we have learned
+about in a previous class. And we notice it sits, like,
+right here between the HDFS and MapReduce, and it's built on top of HDFS. As you will see later, it actually utilizes MapReduce
+jobs to execute its actions. The data is actually stored
+internally inside the HDFS. 
+
+== History ==
+So let's look a little
+bit about the history. HDFS first came about in about
+November of 2006 when the first paper came out describing the BigTable and
+all of the interesting aspects of the challenges Google was
+trying to deal with at the time. This is what started and triggered
+all of this additional research and different ways of dealing with
+these very large datasets. In about February of 2007,
+initial HBase prototype was created and contributed to the Hadoop. Fast-forward to October of that same year,
+first usable HBase was delivered, and in January of 2008,
+Hadoop became the top-level project, and HBase became one of the subprojects. And it still is. Ever since there have been many
+many releases of HBase, and it is one of the most commonly used
+applications within the Hadoop stack.

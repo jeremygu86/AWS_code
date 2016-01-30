@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>
+      Matei Zaharia  - 6.S897 Large-Scale Systems, Fall 2015 
+    </title>
+    <link rel="stylesheet" href="Matei%20Zaharia%20-%206.S897%20Large-Scale%20Systems,%20Fall%202015_files/basic-profile.css" media="all">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <script src="Matei%20Zaharia%20-%206.S897%20Large-Scale%20Systems,%20Fall%202015_files/ga.js" async="" type="text/javascript"></script><script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-33562864-2']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    
+  </head>
+  <body>
+    <div id="wrap">
+      <div id="sidebar">
+
+      <div style="width: 100%; background:white; margin:0; text-align: center; padding-bottom: 15px;">
+      <a href="http://people.csail.mit.edu/matei/index.html"><img src="Matei%20Zaharia%20-%206.S897%20Large-Scale%20Systems,%20Fall%202015_files/matei3.jpg" style="border: none;" alt="Matei Zaharia"></a>
+      </div>
+      
+        <ul>
+          
+            <li><a href="http://people.csail.mit.edu/matei/"><strong>Home</strong></a></li>
+          
+          <li><a href="http://people.csail.mit.edu/matei/#projects">Projects</a></li>
+          <li><a href="http://people.csail.mit.edu/matei/#publications">Publications</a></li>
+          <li><a href="http://people.csail.mit.edu/matei/#talks">Talks</a></li>
+          <li><a href="http://people.csail.mit.edu/matei/#opensource">Code</a></li>
+        </ul>
+      </div>
+      <div id="content">
+        <h1 id="s897-large-scale-systems">6.S897: Large-Scale Systems</h1>
+
+<p>Instructor: <a href="http://people.csail.mit.edu/matei/">Matei Zaharia</a><br>
+Fall 2015, TR 2:30-4, room 34-301<br>
+12 units (3-0-9)<br>
+Office hours: Mondays 5-6 in <a href="http://www.csail.mit.edu/resources/maps/9G/G996.gif">32G-996</a></p>
+
+<p>Cloud computing and big data are fundamentally changing the way software is built and delivered.
+This is a graduate-level seminar class on the latest research in this field.
+Students will read and discuss several papers per week and do a semester-long project (of their own choice) in groups of 1-3.</p>
+
+<p><strong>Prerequisites:</strong>
+The class is open to PhD students as well as advanced Masters and 
+undergrad students who have taken a grad-level systems course (6.824, 
+6.830 or 6.814).
+If unsure about whether you meet the prerequisites, <a href="mailto:matei@mit.edu">contact the instructor</a>.</p>
+
+<p><strong>Grading:</strong>
+The main evaluation will be around a <a href="#projects">project</a> that students propose and execute during the course.
+Apart from that, each student is expected to <a href="#presentations">present</a> one of the papers and to participate in class.
+The grading rubric will be 70% project, 15% paper presentation and 15% participation.</p>
+
+<h2 id="schedule">Schedule</h2>
+
+<p><a href="mailto:6.s897staff@gmail.com">Email us your answers</a> for summary questions before <strong>noon</strong> the day of class.</p>
+
+<table style="width: 100%;">
+<thead>
+  <tr><th>Date</th><th>Topic</th><th colspan="2">Readings</th></tr>
+</thead>
+<tbody>
+
+  <tr>
+    <td>9/10</td>
+    <td>Introduction</td>
+    <td><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/overview.pdf">Slides</a></td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>9/15</td>
+    <td>Background</td>
+    <td>
+      <ul>
+        <li>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/above-the-clouds.pdf">A View of Cloud Computing</a>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/slides/a-view-of-cloud-computing.pdf">(slides)</a>
+        </li>
+        <li>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/facebook-hpca2012.pdf">Social Networking at Scale</a>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/slides/facebook-scaling.pdf">(slides)</a>
+        </li>
+        <li>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/facebook-warehouse.pdf">Data Warehousing and Analytics at Facebook</a>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/slides/facebook-data-warehouse.pdf">(slides)</a>
+        </li>
+      </ul>
+    </td>
+    <td><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/questions/background.txt" title="Summary questions">?</a></td>
+  </tr>
+
+  <tr>
+    <td>9/17</td>
+    <td><a href="https://calendar.csail.mit.edu/events/158720">Guest: Ali Ghodsi<br>(Databricks)</a></td>
+    <td>
+      <ul>
+        <li><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/databricks-mit-slides.pdf">Slides from Ali</a></li>
+        <li><a href="http://people.csail.mit.edu/matei/papers/2015/vldb_spark.pdf">Scaling Spark in the Real World</a></li>
+        <li><a href="http://people.csail.mit.edu/matei/papers/2015/sigmod_spark_sql.pdf">Spark SQL</a></li>
+      </ul>
+    </td>
+    <td><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/questions/ghodsi.txt" title="Summary questions">?</a></td>
+  </tr>
+
+  <tr>
+    <td>9/22</td>
+    <td>Storage 1</td>
+    <td>
+      <ul>
+        <li>
+          <a href="http://research.google.com/archive/gfs-sosp2003.pdf">Google File System</a>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/slides/gfs.pdf">(slides)</a>
+        </li>
+        <li>
+          <a href="https://www.usenix.org/system/files/conference/osdi12/osdi12-final-75.pdf">Flat Datacenter Storage</a>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/slides/fds.pdf">(slides)</a>
+        </li>
+        <li><a href="https://www.usenix.org/system/files/conference/osdi14/osdi14-paper-muralidhar.pdf">f4</a> (optional)</li>
+      </ul>
+    </td>
+    <td><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/questions/storage1.txt" title="Summary questions">?</a></td>
+  </tr>
+
+  <tr>
+    <td>9/24</td>
+    <td><a href="https://calendar.csail.mit.edu/events/159680">Guest: Jeremy Freeman<br>(HHMI Janelia)</a></td>
+    <td>
+      <ul>
+        <li><a href="http://thefreemanlab.com/talk-mit-fall-2015/#/computation">Slides from Jeremy</a></li>
+        <li><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/freeman-2014.pdf">Mapping Brain Activity at Scale</a> (optional)</li>
+        <li><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/freeman-open-source.pdf">Open Source Tools for Neuroscience</a> (optional)</li>
+        <li><a href="http://thunder-project.org/">Thunder</a>, <a href="http://bolt-project.org/">Bolt</a> (optional)</li>
+      </ul>
+    </td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>9/29</td>
+    <td>Storage 2</td>
+    <td>
+      <ul>
+        <li>
+          <a href="http://research.google.com/archive/bigtable-osdi06.pdf">BigTable</a>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/slides/bigtable.pdf">(slides)</a>
+        </li>
+        <li>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/dynamo.pdf">Dynamo</a>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/slides/dynamo.pdf">(slides)</a>
+        </li>
+        <li>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/tao.pdf">TAO</a>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/slides/tao.pdf">(slides)</a>
+        </li>
+      </ul>
+    </td>
+    <td><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/questions/storage2.txt" title="Summary questions">?</a></td>
+  </tr>
+
+  <tr>
+    <td>10/1</td>
+    <td>Coordination</td>
+    <td>
+      <ul>
+        <li>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/paxos-moderately-complex.pdf">Paxos Made Moderately Complex</a>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/slides/paxos.pdf">(slides)</a>
+        </li>
+        <li>
+          <a href="http://research.google.com/archive/chubby-osdi06.pdf">Chubby</a>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/slides/chubby.pdf">(slides)</a>
+        </li>
+      </ul>
+    </td>
+    <td><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/questions/coordination.txt" title="Summary questions">?</a></td>
+  </tr>
+
+  <tr>
+    <td>10/6</td>
+    <td>Storage 3</td>
+    <td>
+      <ul>
+        <li>
+          <a href="http://research.google.com/archive/spanner-osdi2012.pdf">Spanner</a>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/slides/spanner.pdf">(slides)</a>
+        </li>
+        <li><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/coordination-avoidance.pdf">Coordination Avoidance in Database Systems</a></li>
+        <li><a href="https://www.usenix.org/system/files/conference/hotos15/hotos15-paper-ajoux.pdf">Challenges to Adopting Stronger Consistency at Scale</a></li>
+        <li><a href="http://muratbuffalo.blogspot.com/2013/07/spanner-googles-globally-distributed_4.html">Spanner Summary</a> (optional)</li>
+      </ul>
+    </td>
+    <td><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/questions/storage3.txt" title="Summary questions">?</a></td>
+  </tr>
+
+  <tr>
+    <td>10/8</td>
+    <td>Parallel Processing 1</td>
+    <td>
+      <ul>
+        <li><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/mapreduce-cacm.pdf">MapReduce</a></li>
+        <li>
+          <a href="http://people.csail.mit.edu/matei/papers/2012/nsdi_spark.pdf">Spark</a>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/slides/mr-and-spark.pdf">(slides)</a>
+        </li>
+        <li>
+          <a href="http://people.csail.mit.edu/matei/papers/2013/sosp_spark_streaming.pdf">Spark Streaming</a>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/slides/streaming.pdf">(slides)</a>
+        </li>
+      </ul>
+    </td>
+    <td><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/questions/processing1.txt" title="Summary questions">?</a></td>
+  </tr>
+
+  <tr>
+    <td>10/13</td>
+    <td>NO CLASS</td>
+    <td></td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>10/15</td>
+    <td>Parallel Processing 2</td>
+    <td>
+      <ul>
+        <li>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/google-dataflow.pdf">Google Cloud Dataflow</a>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/slides/dataflow.pdf">(slides)</a>
+        </li>
+        <li>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/naiad.pdf">Naiad</a>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/slides/naiad.pdf">(slides)</a>
+        </li>
+      </ul>
+    </td>
+    <td><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/questions/processing2.txt" title="Summary questions">?</a></td>
+  </tr>
+
+  <tr>
+    <td>10/20</td>
+    <td>Resource Managers</td>
+    <td>
+      <ul>
+        <li><a href="http://larch-www.lcs.mit.edu:8001/%7Ecorbato/sjcc62/">An Experimental Time-Sharing System</a></li>
+        <li>
+          <a href="http://people.csail.mit.edu/matei/papers/2011/nsdi_mesos.pdf">Mesos</a>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/slides/mesos.pdf">(slides)</a>
+        </li>
+        <li>
+          <a href="http://research.google.com/pubs/archive/43438.pdf">Borg</a>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/slides/borg.pdf">(slides)</a>
+          <a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/slides/rm-comparison.pdf">(comparison)</a>
+        </li>
+      </ul>
+    </td>
+    <td><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/questions/resource-managers.txt" title="Summary questions">?</a></td>
+  </tr>
+
+  <tr>
+    <td>10/22</td>
+    <td>Guest: John Wilkes<br>(Google)</td>
+    <td>
+      <ul>
+        <li><a href="http://www.slideshare.net/SatnamSingh67/2015-0605-cluster-management-with-kubernetes">Kubernetes</a></li>
+      </ul>
+    </td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>10/27</td>
+    <td>NO CLASS</td>
+    <td>
+    </td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>10/29</td>
+    <td>Networking</td>
+    <td>
+      <ul>
+        <li><a href="http://conferences.sigcomm.org/sigcomm/2015/pdf/papers/p183.pdf">Google Jupiter</a></li>
+        <li><a href="https://www.usenix.org/system/files/conference/nsdi15/nsdi15-paper-grosvenor_update.pdf">QJUMP</a></li>
+      </ul>
+    </td>
+    <td><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/questions/networking.txt" title="Summary questions">?</a></td>
+  </tr>
+
+  <tr>
+    <td>11/3</td>
+    <td>Scheduling Policies</td>
+    <td>
+      <ul>
+        <li><a href="http://people.csail.mit.edu/matei/papers/2011/nsdi_drf.pdf">Dominant Resource Fairness</a></li>
+        <li><a href="https://www.usenix.org/system/files/conference/osdi12/osdi12-final-215.pdf">Pisces</a></li>
+      </ul>
+    </td>
+    <td><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/questions/scheduling.txt" title="Summary questions">?</a></td>
+  </tr>
+
+  <tr>
+    <td>11/5</td>
+    <td>Performance</td>
+    <td>
+      <ul>
+        <li><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/roofline.pdf">Roofline Model</a></li>
+        <li><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/bid-data.pdf">Big Data Analytics with Small Footprint</a></li>
+      </ul>
+    </td>
+    <td><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/questions/performance.txt" title="Summary questions">?</a></td>
+  </tr>
+
+  <tr>
+    <td>11/10</td>
+    <td>PROJECT TALKS</td>
+    <td>
+    </td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>11/12</td>
+    <td>Structured Data</td>
+    <td>
+      <ul>
+        <li><a href="http://vldb.org/pvldb/vol5/p1790_andrewlamb_vldb2012.pdf">Vertica</a></li>
+        <li><a href="http://www.vldb.org/pvldb/vldb2010/papers/R29.pdf">Dremel</a></li>
+      </ul>
+    </td>
+    <td><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/questions/structured.txt" title="Summary questions">?</a></td>
+  </tr>
+
+  <tr>
+    <td>11/17</td>
+    <td>Advanced Analytics 1</td>
+    <td>
+      <ul>
+        <li><a href="https://www.usenix.org/system/files/conference/osdi12/osdi12-final-167.pdf">PowerGraph</a></li>
+        <li><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/ligra.pdf">Ligra</a></li>
+        <li><a href="https://www.usenix.org/system/files/conference/hotos15/hotos15-paper-mcsherry.pdf">Scalability! But at what COST?</a></li>
+      </ul>
+    </td>
+    <td><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/questions/graphs.txt" title="Summary questions">?</a></td>
+  </tr>
+
+  <tr>
+    <td>11/19</td>
+    <td>Advanced Analytics 2</td>
+    <td>
+      <ul>
+        <li><a href="https://www.usenix.org/system/files/conference/osdi14/osdi14-paper-li_mu.pdf">Parameter Server</a></li>
+        <li><a href="https://www.usenix.org/system/files/conference/osdi14/osdi14-paper-chilimbi.pdf">Project Adam</a></li>
+      </ul>
+    </td>
+    <td><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/questions/ml.txt" title="Summary questions">?</a></td>
+  </tr>
+
+  <tr>
+    <td>11/24</td>
+    <td>Security</td>
+    <td>
+      <ul>
+        <li><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/get-off-my-cloud.pdf">Hey, You, Get Off of My Cloud</a></li>
+        <li><a href="https://www.usenix.org/system/files/conference/nsdi14/nsdi14-paper-popa.pdf">Mylar</a></li>
+        <li><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/pinq-cacm.pdf">Privacy Integrated Queries</a></li>
+      </ul>
+    </td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>11/26</td>
+    <td>NO CLASS</td>
+    <td></td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>12/1</td>
+    <td>Programming Languages</td>
+    <td>
+      <ul>
+        <li><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/erlang.pdf">Erlang</a></li>
+        <li><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/facade.pdf">Facade</a></li>
+        <li><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/cilk.pdf">Cilk</a> (optional)</li>
+      </ul>
+    </td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>12/3</td>
+    <td>Serving Systems</td>
+    <td>
+      <ul>
+        <li><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/unicorn.pdf">Unicorn</a></li>
+        <li><a href="http://people.csail.mit.edu/matei/courses/2015/6.S897/readings/druid.pdf">Druid</a></li>
+      </ul>
+    </td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>12/8</td>
+    <td>New Hardware</td>
+    <td>
+      <ul>
+        <li><a href="http://sigops.org/sosp/sosp15/current/2015-Monterey/printable/227-dragojevic.pdf">FaRM</a></li>
+        <li><a href="https://www.usenix.org/system/files/conference/atc15/atc15-paper-nelson_update.pdf">Grappa</a></li>
+      </ul>
+    </td>
+    <td></td>
+  </tr>
+
+  <tr>
+    <td>12/10</td>
+    <td>PROJECT TALKS</td>
+    <td>
+    </td>
+    <td></td>
+  </tr>
+</tbody>
+</table>
+
+<h2 id="a-nameprojectsprojectsa"><a name="projects">Projects</a></h2>
+
+<p>Students will propose and run a semester-long project, ideally in groups of 2-3.
+It is fine to use your existing research project if it is relevant to the course and the instructor approves.
+You will present the project at the end of the course and write a 10-12 page report.</p>
+
+<p>Rough timeline for the project:</p>
+
+<table>
+<tbody>
+  <tr><td>Form groups, run idea by Matei</td><td>October 2</td></tr>
+  <tr><td>Proposal (1-2 pages)</td><td>October 9</td></tr>
+  <tr><td>Mid-term review</td><td>November 10</td></tr>
+  <tr><td>Poster session</td><td>December 10</td></tr>
+  <tr><td>Final report (10-12 pages)</td><td>December 15</td></tr>
+</tbody>
+</table>
+
+<h2 id="a-namepresentationspaper-presentationsa"><a name="presentations">Paper Presentations</a></h2>
+
+<p>Each student will be assigned a paper to present during the class.
+You should prepare a 15-20 minute presentation on the paper.
+In your presentation, cover each of the following:</p>
+
+<ul style="margin-left: 20px;">
+  <li>Problem: What is the paper trying to solve? How real is the problem?</li>
+  <li>Key idea: What is the main idea in the solution?</li>
+  <li>Novelty: What is different from previous work, and why? Is it a 
+new problem, a new solution, or a new environment for an existing 
+problem?</li>
+  <li>Critique: Is there anything you would change in the solution? What
+ about in the way the authors presented or evaluated the solution?</li>
+</ul>
+
+
+        <p class="credits">
+          Adapted from a template by <a href="http://andreasviklund.com/">Andreas Viklund</a>.
+        </p>
+      </div>
+    </div>
+  
+
+</body></html>

@@ -1,0 +1,54 @@
+
+== WHY HBASE? HBASE VS HFDS == 
+
+
+
+So in the last class we learned
+a lot about how MapReduce works and how HDFS functions at a big, as a big
+data source for the Hadoop architecture. Now, you might think,
+why do we need HBase? Why are we even talking about
+HBase when we have HDFS? We know that Hadoop uses this distributive
+file system for storing the data. We know that MapReduce can process on it. And we know that Hadoop excels in
+storing and processing huge amounts of data in various formats, so why would
+we even need to talk about HBase? There are some limitations to Hadoop. Hadoop can perform only batch processing,
+and data will be accessed
+in a sequential manner. That means that one has to search the
+entire dataset for even the simplest jobs. Huge datasets then need to be processed
+as a result of the previous processing of maybe another huge dataset, and you can
+see how the sequential processing might become a problem when you're trying to
+accomplish operations that are maybe similar to kinds of things you are used
+to doing in a relational database system. 
+
+So HDFS is really not that great for
+record lookup, and it is not really great for updates either. 
+
+Well, this is where HBase comes in. HBase is designed to efficiently
+address all of the downsides and all of the issues that we see with HDFS
+when it comes to this kind of processing. So applications such as HBase,
+sometimes you hear about databases called Cassandra,
+Dynamo, CouchDB, MongoDB, these applications are great
+at that random access, random access to different records of our
+data stored within our large data source. So if we are trying to take
+huge amounts of data and access it in what we call the random
+access manner, we need HBase. HBase is great as a fast record lookup,
+and its updates are done by creating
+new versions of the values. So it's pretty quick at
+doing updates as well. So if we look at the difference
+between HDFS and HBase, we can see that HBase is a database
+that's built on top of HDFS or HDFS is just a distributed file
+system that sits under, underlying all of these layers of technologies,
+allowing us to store very large datasets. HDFS does not support very fast lookups
+where HBase allows us to do that and enables fast lookups for
+large tables that are stored on HDFS. And HBase does have low latency access to
+single records, from billions of records, which is a huge benefit over the way HDFS
+will access very large datasets, and internally, in order to do that,
+HBase uses something called Hash tables. And we'll talk a little bit about Hash
+tables and we're going to see what that really means, but it stores
+the data in indexed HDFS files and that allows this fast speed-up for looking
+up a lot of, very large amounts of data. So we've talked about HBase sitting
+on top of HDFS so HBase can read and write within HDFS, but additionally one
+cannot only store the data in HDFS, but you can now directly
+access it through HBase. So you might imagine that there are some
+consumers that like to read and access the data from HBase. They can do that directly or they can do, they can directly write
+data into either HBase or HDFS. So we have a lot of
+options which is great.

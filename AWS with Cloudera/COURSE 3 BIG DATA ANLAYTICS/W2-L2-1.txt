@@ -1,0 +1,69 @@
+Welcome back. Let's look into the architecture of
+HIVE and see what is it composed of. What are the major pieces that
+make HIVE work the way it does? We know that HIVE is a data warehouse
+infrastructure that's built on top of the HADOOP and enabled SQL like
+queries on datasets by compiling SQL into the map produced jobs and
+then running these jobs in the cluster. Hive typically runs on
+the client's machine. And when you submit a Hive query, you automatically submit
+several map produced jobs. They run in the Hadoop cluster. And then they return data to us. So now business analysts can come to
+a SQL interface, perform their data analytics and analysis, leveraging Hadoop
+by using this basic SQL knowledge. Hive is composed of five major components. We have the shell, the metastore, the execution engine,
+compiler, and the driver. So let's look at some of the main pieces
+that comprise the hive architecture. User interface is very important. It allows us to interface and
+submit jobs and queries to the data that's sitting
+underneath the layer of hive. Hive is a data warehouse infrastructure
+software, and it can create interactions between the users and HDFS, and
+enable easier access to the data. The user interface allows HIve to
+support these kinds of interfaces. We have a high volume interface, we have
+a high command line, and many different versions of high tracking with the users
+and allowing submission of those jobs. Then we have a metaStore. Hive chooses respected database
+service to store the schema or the metadata of the type of databases. Columns in the table, their data types,
+and the mapping into the HDFS. All of that is done within the metaStore. And then we have a Hive query language. Processing engine. And this engine is so hard to SQL for querying on the schema
+information from the metaStore. And it is one of the replacements
+of the traditional approaches for Mac produced program. Instead of writing the Mac produced
+program in Java, we can write a query for Mac produced Java and process it. The execution engine
+provides the conjunction part of the HiveQL and
+the engine and the map reduced. And it allows that mapping of the sequel
+statements into the map reduced jobs. The execution engine processes the query, it generates results the same
+as the map reduced results. And it allows different
+flavors of the map produced. So how does Hive work in order to access
+all of the enterprise data warehouse? So we have the set of business users and
+they can interact with the underlying metaStore and the drivers for numerous
+different access ways to the data. We can use the thrift or
+the RDBMS applications and many different web interfaces
+to access the server. So we mentioned a little bit earlier that
+metaStore is a very important part this. It stores according to name space for
+the set of tables and it holds all the data definitions
+of the partitions and the physical layers and
+the structure of the warehouse. So it's a very important piece. The components that store the system
+catalog and meta data stored by the tables, and the columns and
+it's stored in a traditional rdbms. By default high typically
+a defaults database, but you can change to SQL or h based or
+actual database of your choice. Now, driver is another
+very important component. It manages the life cycle of the HiveSQL. And it takes those statements and
+moves them through Hive. The driver also maintains the session and
+handles any session in statistics about each one of the sessions
+that you interact with Hive. The query compiler is used as a component
+that allows us to compile the HiveQL into directed acyclic graph and
+pass that onto the map produced task. If you remember in the previous class we
+talked about how the map and reduced and shuffle work. And that part still stays the same, that the query compiler
+enables those jobs to run. The optimizer consists of
+the chain of transformations, such that these direct sequence
+graphs can result from more transformation than they're passed as
+an input to the next transformation. And it optimizes all their tasks. So it performs tasks like column-pruning,
+partitioning pruning, re-partitioning of the data, and really optimizes
+the entire process of querying your data. The execution engine component
+executes the task produced by the compiler in the proper
+dependency order. The execution engine interacts with
+the underlying Hadoop instance and makes the communication work really well. We've talked about a couple
+of different servers. Hive server is a component that provides
+a Thrift interface to the JDBC or ODBC server, and provides a way of integrating
+Hive with all these other applications. We've mentioned there's several
+different client components so we have the command line interface. You can use the web user interface,
+and they are the JDBC and ODBC driver. They can be leveraged in
+order to interact with Hive. So if you think about it in the big
+picture, we have a HIve query language that runs to the Hive,
+who uses the metaStore and all these pieces we have just mentioned
+to execute jobs in the Hadoop. The job we do maps and reduces,
+brings information back to Hive. Hive manipulates that information and presents it back as an output
+of a SQL statement.

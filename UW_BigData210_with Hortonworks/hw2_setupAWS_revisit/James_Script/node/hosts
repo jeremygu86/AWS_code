@@ -1,0 +1,7 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+#USE THE INTERNAL IP AND FQDN HOSTNAME HERE
+172.30.0.138      ip-172-30-0-138.us-west-2.compute.internal    ambari
+172.30.0.137      ip-172-30-0-137.us-west-2.compute.internal    nn1
+172.30.0.139      ip-172-30-0-139.us-west-2.compute.internal    nn2

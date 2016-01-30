@@ -1,0 +1,1 @@
+"use strict";define("bundles/programming/data/immediate/submissionHistory",["require","exports","module","bundles/programming/api/immediate/submissionSummaries"],function(require,exports,module){var i=require("bundles/programming/api/immediate/submissionSummaries");module.exports=function(e){return i.list(e)}});

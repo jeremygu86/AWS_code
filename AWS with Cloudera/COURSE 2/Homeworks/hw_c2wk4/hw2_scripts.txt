@@ -1,0 +1,262 @@
+
+## ASSIGNEMNT 1/2 用python做map-reduce
+
+https://www.coursera.org/learn/hadoop/programming/m6H7U/running-wordcount-with-hadoop-streaming-using-python-code
+
+password: cloudera
+
+# 1. Create a new python file for map and for reduce
+写python的mapper 和 reducer
+touch wordcount_mapper.py 
+touch wordcount_reducer.py
+
+## 2. Copy the python file to the VM/Sandbox
+## bigwhite
+ssh -i "evernote_Nviginia.pem" cloudera@54.152.40.36
+
+## root
+mkdir hw2_c2wk4
+cd hw2_c2wk4
+
+## bigwhite 
+scp -i "evernote_Nviginia.pem" wordcount_mapper.py cloudera@54.152.40.36:hw2_c2wk4
+scp -i "evernote_Nviginia.pem" wordcount_reducer.py cloudera@54.152.40.36:hw2_c2wk4
+
+# create data
+制作数据
+echo "A long time ago in a galaxy far far away" >testfile1 
+echo "Another episode of Star Wars" > testfile2 
+
+## debug on bigwhite
+chmod +x wordcount_mapper.py 
+chmod +x wordcount_mapper_debug.py 
+chmod +x wordcount_reducer.py 
+
+cat testfile1 | ./wordcount_mapper_debug.py  | sort | ./wordcount_reducer.py 	
+
+vi /tmp/mymaplog"+"pipe_test"
+
+## cloudera
+chmod +x wordcount_mapper.py 
+chmod +x wordcount_reducer.py 
+
+
+## HDFS
+拷贝数据HDFS
+
+hdfs dfs -mkdir input 
+
+## by default the folder is in /user/cloudera/
+## hdfs dfs -mkdir /user/cloudera/input 
+
+hdfs dfs -put testfile1 input
+hdfs dfs -put testfile2 input 
+
+hdfs dfs -ls input 
+
+hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar \
+   -input input \
+   -output output_new \
+   -mapper /home/cloudera/hw2_c2wk4/wordcount_mapper.py \
+   -reducer /home/cloudera/hw2_c2wk4/wordcount_reducer.py
+
+
+## delete the folder otherwise will see the error
+#hdfs dfs -rm -r /user/cloudera/output_new
+
+## List and read the output
+hdfs dfs -ls output_new
+hdfs dfs -cat /user/cloudera/output_new/part-00000
+
+
+## note:
+Try: hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar --help
+or see hadoop.apache.org/docs/r1.2.1/
+
+Let’s change the number of reduce tasks to see its effects. 
+Setting it to 0 will execute no reducer and only produce the map output. 
+
+hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar \
+   -input input \
+   -output output_0 \
+   -mapper /home/cloudera/hw2_c2wk4/wordcount_mapper.py \
+   -reducer /home/cloudera/hw2_c2wk4/wordcount_reducer.py \
+   -numReduceTasks 0
+   
+# Change the number of reducers to 2 and answer the related quiz question at the end of the video lesson 
+
+#@Without reducers the word far should exist 2 times in the intermediate file (ie mapper output)
+
+hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar \
+   -input input \
+   -output output_2 \
+   -mapper /home/cloudera/hw2_c2wk4/wordcount_mapper.py \
+   -reducer /home/cloudera/hw2_c2wk4/wordcount_reducer.py \
+   -numReduceTasks 2
+
+hdfs dfs -ls output_0
+hdfs dfs -ls output_2
+hdfs dfs -cat /user/cloudera/output_0/part-00000
+hdfs dfs -cat /user/cloudera/output_2/part-00000
+hdfs dfs -cat /user/cloudera/output_2/part-00001
+
+hadoop fs -getmerge /user/cloudera/output_0/* wordcount_num0_output.txt 
+hadoop fs -getmerge /user/cloudera/output_2/* wordcount_num2_output.txt 
+
+
+
+## Copy the file back to mac
+http://superuser.com/questions/517943/copy-files-from-linux-server-to-mac-desktop
+
+i. From Linux to Mac (run from the Linux machine): ??Don't know how to set up the server on mac
+
+scp wordcount_num0_output.txt user@remote_server:/Users/YOURNAME/
+
+ii. From Linux to Mac (run from the Mac):
+## Way 1
+scp -i "evernote_Nviginia.pem" cloudera@54.152.40.36:hw2_c2wk4/wordcount_num0_output.txt .
+
+## Way 2 Don't need to input the password when scp.
+https://gist.github.com/arunoda/7790979
+http://stackoverflow.com/questions/50096/how-to-pass-password-to-scp
+sshpass -p "cloudera" scp -i "evernote_Nviginia.pem" cloudera@54.152.40.36:hw2_c2wk4/wordcount_num2_output.txt .
+
+
+
+
+
+
+
+
+
+## ASSIGNEMNT 2/2 
+Exercise in Joining data with streaming using Python code 
+
+
+## on bigwhite
+
+touch join1_FileA.txt
+touch join1_FileB.txt
+touch make_join2data.py
+touch make_data_join2.txt
+touch join1_mapper.py
+touch join1_reducer.py
+
+chmod +x join1_mapper.py
+chmod +x join1_reducer.py
+
+cat join1_File*.txt | ./join1_mapper.py | sort | ./join1_reducer.py
+
+
+## multiple files 带密码
+sshpass -p "cloudera" scp -i "evernote_Nviginia.pem" join1_FileA.txt join1_FileB.txt cloudera@54.152.40.36:hw2_c2wk4
+
+## scp a folder
+sshpass -p "cloudera" scp -r -i "evernote_Nviginia.pem" assignment_2/. cloudera@54.152.40.36:hw2_c2wk4/scp_test
+
+# rm -r scp_test
+
+sshpass -p "cloudera" scp -r -i "evernote_Nviginia.pem" assignment_2/. cloudera@54.152.40.36:hw2_c2wk4
+
+
+## cloduera
+chmod +x join1_mapper.py
+chmod +x join1_reducer.py
+
+## HDFS
+hdfs dfs -mkdir input_join
+# hdfs dfs -mkdir output_join
+
+hdfs dfs -put join1_FileA.txt input_join
+hdfs dfs -put join1_FileB.txt input_join
+
+## check
+hdfs dfs -ls /user/cloudera/input_join  
+
+
+## delete the folder otherwise will see the error
+# hdfs dfs -rm -r /user/cloudera/output_join
+# hdfs dfs -rm -r /user/cloudera/input_join
+
+
+hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar \
+-input /user/cloudera/input_join \
+-output /user/cloudera/output_join_test2 \
+-mapper /home/cloudera/hw2_c2wk4/join1_mapper.py \
+-reducer /home/cloudera/hw2_c2wk4/join1_reducer.py
+
+hdfs dfs -ls /user/cloudera/output_join_test2
+hdfs dfs -cat /user/cloudera/output_join_test2/part-00000
+
+hadoop fs -copyToLocal /user/cloudera/output_join_test2/part-00000 assignment2_out.txt
+
+
+
+
+
+## Submission
+
+# on bigwhite
+sh make_data_join2.txt
+
+sshpass -p "cloudera" scp -r -i "evernote_Nviginia.pem" join2_gen*.txt cloudera@54.152.40.36:hw2_c2wk4
+
+
+
+
+## Modified Mapper
+chmod +x join1_mapper_mod.py
+
+# previous work
+cat join1_File*.txt | ./join1_mapper.py | sort | ./join1_reducer.py
+
+# map works well. 
+
+
+# Step1. Get ABC's show first
+cat join2_gen*.txt | ./join1_mapper_mod.py | sort | grep ABC | cut -d$'\t' -f1
+# Step2. Get the total count for those shows
+
+## join_reducer_mod.py 
+cat join2_gen*.txt | ./join1_mapper_mod.py | sort 
+cat join2_gen*.txt | ./join1_mapper_mod.py | sort | grep ABC | cut -d$'\t' -f1
+cat join2_gen*.txt | ./join1_mapper_mod.py | sort | ./join1_reducer_mod.py >assignment2_submit.txt
+
+sshpass -p "cloudera" scp -r -i "evernote_Nviginia.pem" join1_mapper_mod.py join1_reducer_mod.py cloudera@54.152.40.36:hw2_c2wk4
+
+## HDFS
+## cloduera
+chmod +x join1_mapper_mod.py
+chmod +x join1_reducer_mod.py
+
+hdfs dfs -mkdir input_join_mod
+# hdfs dfs -mkdir output_mod
+
+hdfs dfs -put join2_gen*.txt input_join_mod
+
+## check
+hdfs dfs -ls /user/cloudera/input_join_mod
+
+
+## delete the folder otherwise will see the error
+# hdfs dfs -rm -r /user/cloudera/output_mod
+# hdfs dfs -rm -r  /user/cloudera/input_mod
+
+
+hadoop jar /usr/lib/hadoop-mapreduce/hadoop-streaming.jar \
+-input /user/cloudera/input_join_mod \
+-output /user/cloudera/output_join_mod \
+-mapper /home/cloudera/hw2_c2wk4/join1_mapper_mod.py \
+-reducer /home/cloudera/hw2_c2wk4/join1_reducer_mod.py
+
+hdfs dfs -ls /user/cloudera/output_join_mod
+hdfs dfs -cat /user/cloudera/output_join_mod/part-00000
+
+hadoop fs -copyToLocal /user/cloudera/output_join_mod/part-00000 assignment2_submit.txt
+cat assignment2_submit.txt
+
+
+
+## on bigwhite
+sshpass -p "cloudera" scp -i "evernote_Nviginia.pem" cloudera@54.152.40.36:hw2_c2wk4/assignment2_submit.txt .
+

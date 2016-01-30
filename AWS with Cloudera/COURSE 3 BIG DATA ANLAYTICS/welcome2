@@ -1,0 +1,63 @@
+Welcome to the second video in
+the Big Data Analytics introduction. In this video, I'll give a quick
+description of what we mean by analysis, and it will be a little bit more clear
+about the activities we talk about in the rest of the course, and how they fit into the range of activities
+that you might perform in other courses, or our other courses after this, or
+your other courses, or your work. There are many kinds
+of analysis we can do. In fact, if you look up data analysis, on the Wiki page you get a large list
+of activities and terminologies, but a large part of that is based on doing
+inferential statistics where you really want to make a certain kind of statement
+where generally we wanna know about the effects but we don't want to have
+to cut it off at a significance level. In other words, we can talk about effects
+and predictions and make explanations about our data without necessarily
+having to assign a significance level. So, for our purposes,
+dealing with big data, there are other aspects that
+are really more immediate and relevant. These aspects include query
+processing which is asking questions, formulating queries. And of course, asking good questions
+is very important because big data doesn't save bad questions. Summary statistics,
+also called descriptive statistics which is getting means, maximums and
+other simple summaries. And exploring your data
+where you might run a query, transform data, check if something is
+interesting or anomalist, and then repeat. Another kind of analysis is modeling, which we will cover it
+more in the next course. That is more about finding relationships
+between parts of your data or between variables in your data. So let's look at the analysis that
+we're gonna cover here in this course. Query processing is
+practically speaking just SQL. Where you select rows, you can project columns, you have
+operations like join, and sorting. But keep in mind sometimes
+SQL can be difficult and requires it's own kind of
+programming issues for optimization. Descriptive statistics basically finding
+characteristics about your data. We are often talking
+about signal variables. However, we also are often interested
+in getting characteristics for particular groups so
+that we can compare them or rank them. For exploratory analysis we often work
+in an interactive manner where we type commands and
+get answers as we develop an analysis. We also often iterate over
+different questions and procedures in order to
+figure out what we wanna do. We work with samples of the data in
+order to make things run faster. However, this means that you have to
+be careful that you might iterate so much that you get interesting
+results just by chance. In other words, with exploratory analysis,
+you have to confirm or test your analysis against
+different samples. That brings up a side note
+about sampling with big data. In fact, a researcher once asked, if maybe we don't really have big data
+problems, only sampling problems. So let's consider sampling. Some statistics do well for sampling. For example, if you take a mean for
+a sample and repeat that for several samples, your overall mean
+will be a fair approximation. Some queries though don't sample well. Consider when you join two data sets and you're trying to match
+items with low probability. Each of them getting sampled. But some of the queries
+might distribute well. For example, finding distinct items can be
+paralyzed and gathered again for a final pass, although it's possible that an
+aggregation over join could sample well. So the sampling and scaling is used is something to keep
+in mind and also something you don't have to worry about with the analysis
+of small data sets of course. Finally, let's remind
+ourselves about big data. Many prominent cases of big data involve
+human activity like internet activity. That are not traditional examples for
+database systems. Sometimes it's streaming, or
+growing, or changing quickly. So because the data's different
+other kinds of questions and processing will be different. Instead of transaction processing maybe we
+need to make full passes through the data and update statistics for,
+let's say for user's internet activity. That's not really a sampling or
+scaling of small data analysis, it's just analysis on a bigger scale. So I think the right way to think of it
+is that we are leveraging and applying small scale analytic techniques as much
+as possible for big data processing. All right, that brings us to
+the end of the introduction module. The next set of modules will
+take detailed look at the tools that help you do analysis.

@@ -1,0 +1,1 @@
+"use strict";define("bundles/programming/models/filesWorkspace",["require","exports","module","backbone"],function(require,exports,module){var Backbone=require("backbone"),e=Backbone.Model.extend({defaults:{parts:null,versionId:null}});module.exports=e});

@@ -1,0 +1,100 @@
+So now that we understand what HIVE does, we understand what the components
+of the architecture are, let's take a deeper look and
+understand how HIVE actually works. What happens under the hood? So here we have kind of our
+way of the infrastructure, we already looked at
+these different pieces. We've talked about the Execution Engine
+and the Driver and the Compiler and the MetaStore. And that all belongs to kind of
+that entitled or ecosystem on high. And then we have the whole Hadoop,
+with the mapper and reducers and the name nodes and data nodes, all the things we've talked about and
+learned about in our previous class. But let's look at what happens when we sit
+at interface, we are at our command line, and we send the query to
+retrieve some specific data. What happens is that our request
+gets sent to the driver, and any database driver that
+can be any database driver, like the JDBC or DBC,
+and that gets executed. Then, the driver takes the help
+of the query compiler that parses the query to check the syntax. And the query or the requirements
+of the query are compiled. In step three, we wanna get the metadata. The compiler sends metadata
+request to the MetaStore, or any other database that might
+be serving as a MetaStore. We take, we wanna send the meta
+data back to the compiler. And MetaStore sends that metadata as
+a response to the compiler's request. Then, we take that information and
+we create a plan. And the compiler checks the requirements
+and resend the plan back to the driver. And after here the parsing and compiling
+of the queries, basically complete. Now we know what we're gonna do. We have the plan. Then this information, this entire
+plan of execution of our query, is then sent to the execution engine. So the driver takes the plan send
+the plan up to the execution engine. The execution engine will actually
+start executing the job, and internally will processes
+the execution job as a map reduce job. And the execution engine will send the job
+to the job tracker, which is a main node and it assigns that job to a particular
+task tracker, which is a data node. And here the query executes
+the MapReduce job. At the same time, the metadata ops are
+being sent while the execution is going. Engine can execute the metadata
+operations within the MetaStore. And then, once the data is actually
+processed, within the Hadoop ecosystem the MapReduce job has
+returned some information to us. We can fetch those results. The execution engine will receive all
+the results that have been reproduced and sent to it by the data node. We can send those results back
+as a result to the driver. And then the driver will
+take those results and send them back to the HIVE interface. And as we're sitting at this user
+interface, it will appear to us as a set of data that is
+entering our single question. So there is couple ways to run Hive jobs. There's two different execution modes. You can run it locally, or
+you can run it on a MapReduce cluster. And then we have a high-level language or
+HiveQL that can be a, that offers a wide set of the commands just like the SQL that
+allows us to run different Hive jobs. If we would like to interact with Hive,
+we have several options there as well. We can do that through
+the interactive mode via console. Or we can write our own scripts and run it as a batch job by submitting these
+scripts in a batch mode to the cluster. So several different
+ways of utilizing Hive. So Hive has several different data units. We've already mentioned a little
+bit about this earlier. It is extremely similar to SQL. They run on top of potentially
+any kind of relational database. So we have database saves,
+we have tables, we have partitions and then we have buckets or clusters. So we have kinda of a three level
+hierarchy where we have tables, partitions and buckets. So typically tables will
+map into an HDFS directory, they are a high level structure and
+they're created with different typed columns there can be integers and quotes
+and strings and different kinds of things. Now we have partition. Partition maps to
+sub-directories under the table. They are parts of table and they optimize
+table structure for data access. Remember we're talking about
+very large data set, and we want to be able to access them. And we want to be able
+to do some slicing and dicing of that data in very,
+very fast manner. So then we have buckets, and buckets maps the files under each one
+of these partitions, and they divide the partition into buckets based on
+the hash function of the certain columns. And you can define those ranges. It allows you to run analytics on
+samples of data instead of running it on very large data sets, and
+it certainly does join optimizations. It is one of the things
+where Hive is pretty good, that shines in its joins and
+how it does them. So these buckets really
+help to optimize it, especially when you have
+very large amounts of data. If you imagine analyzing terabytes
+of data, you probably would want to create these buckets to run on
+the bucket sizes instead of creating new samples every time and scaling
+through these large amounts of data. So let's talk about tables a little bit. Tables are very similar to
+the table in relational database. Each table has a corresponding
+directory in HDFS. Then we have the second layer,
+the partitions, and if you think about partitions, they're analogous to the dense
+indexes of the partitions of the columns. There are nested sub-directories in HDFS
+and for each one of the combinations of partitions and column values, and
+allows users to efficiently retrieve rows. So, let's look at some of
+the Hive data structures. They are pretty well understood database
+concepts that are adopted by Hive, like tables, and rows, and
+columns, and partitions. Hive supports primitive types
+just like integers, forms, doubles and strings, it also
+supports these additional types and structures that we will
+look into in just a bit. As I said, traditional database
+concepts have been adopted here. And so we are talking about very
+familiar concepts like tables, rows, columns, and partitions. We have basic types like integers,
+floats, doubles, strings, nothing new or different. They're all based on Java types and very similar to Tte kinds of structures
+that you would see at any other RDBMS. Additionally, Hive is able to
+support associative arrays, it's able to support lists as well as
+structs so you can create more complex types out of this simple text that we
+have just talked about a minute ago. So Hive enables users to store data
+in different file formats, and it helps in performance improvements. So we have different file
+formats including TEXTFILE, SEQUENCEFILE, ORC file, or RCFILE. ORC typically stands for
+optimized row columnar databases. And the RCFILE or the record column
+are files, are often called RC files. And for the RC files, data is, it's a data
+placement structure that determines how storage, how to store
+relational tables on different. It's designed for systems that
+use MapReduce kinds of framework. It's a structure that is
+a systematic combination of multiple components including data storage format,
+data compression, and optimization techniques for
+data reading. So it makes the whole system works really,
+really well. ORC file format provides a highly
+efficient way of storing hive data specifically.

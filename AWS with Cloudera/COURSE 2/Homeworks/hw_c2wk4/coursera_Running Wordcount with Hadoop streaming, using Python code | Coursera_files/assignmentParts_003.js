@@ -1,0 +1,1 @@
+"use strict";define("bundles/programming/data/immediate/assignmentParts",["require","exports","module","bundles/programming/api/immediate/assignmentParts"],function(require,exports,module){var e=require("bundles/programming/api/immediate/assignmentParts");module.exports=function(i){return e.list(i)}});

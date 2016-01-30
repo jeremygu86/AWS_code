@@ -1,0 +1,206 @@
+###  Assignment Week 4: Create new AWS Cluster
+## 2015/11/6
+## Building a Cluster on EC2_gwx.docx
+## cluster-hosts.txt
+## testHosts.sh
+## all_host_info.csv --> hosts
+## allHosts_ip.sh
+## prepareNode_gwx.sh
+## install ambari
+
+
+## Experiences
+1. AMI and Linux type: Redhat 6.5 is the default configuration in the document. I strongly recommend use the 6.5 version. I used 6.7 and 7.1 at the beginning, it seems that 7.1 didn't work but 6.7 worked fine. I used both m1.xlarge and m1.large instances in the clusters. For storage, make sure you attached four additional volumes in addition to the root. Otherwise, there will be no volumes to be attached/mounted later in David's script. You can follow David's doc to set up the instance 0 and instance 1 and two EBS (128GB). For financial reasons, I would suggest a smaller EBS storage rather than the 1TB in the doc. The price for EBS is below:
+
+    Amazon EBS General Purpose (SSD) volumes: $0.10 per GB-month of provisioned storage
+
+2. Create VPC (enable the ip address allocation). Otherwise there is no public ip address. Use the wizard to create the VPC.
+
+3. Security group. This is very important step. Make sure to check the security group before and after launching EC2 instances. I followed David's doc very carefully when set up security groups. Otherwise, you would have trouble when connect the nodes within the cluster.
+
+4. In David doc, there is an Appendix code for the setup. Use root user (sudo su) to run them and DON'T reboot (I saw in some part he wanted to reboot for some reason but don't do it. On my instance, SElinux will get enabled if rebooted.)
+
+5. Install and setup Ambari.
+
+David told us that the repo in the doc is outdated. In the very beginning, all the clusters I created failed because of this step. So I think this step is crucial.
+
+
+## Start
+
+01.After EC2 Launch and security group configuration. Elastic IP address (for static ip address)
+
+02.get all the public ips and put into cluster-hosts.txt (copy paste from EC2 dashboards)
+
+ssh -i "evernote_NCalifornia.pem" ec2-user@54.193.14.28
+ec2-54-193-14-28.us-west-1.compute.amazonaws.com
+ec2-54-193-14-28.us-west-1.compute.amazonaws.com:8080
+
+
+## Copy
+scp -i evernote_NCalifornia.pem evernote_NCalifornia.pem ec2-user@ec2-54-183-251-26.us-west-1.compute.amazonaws.com:
+scp -i evernote_NCalifornia.pem cluster-hosts.txt ec2-user@ec2-54-183-251-26.us-west-1.compute.amazonaws.com:
+scp -i evernote_NCalifornia.pem prepareNode.sh ec2-user@ec2-54-183-251-26.us-west-1.compute.amazonaws.com:
+
+1. Set up work nodes
+ # give permissions 1/4
+ chmod u+x ./testHosts.sh
+ 
+ # 2/4 http://stackoverflow.com/questions/17131249/how-to-solve-bad-interpreter-no-such-file-or-directory
+ perl -i -pe 'y|\r||d' testHosts.sh 
+ 
+ # test 3/4
+ ssh -oStrictHostKeyChecking=no -i "evernote_NCalifornia.pem" ec2-user@ec2-54-172-146-191.compute-1.amazonaws.com "hostname -f"
+ 
+ ssh -oStrictHostKeyChecking=no -i "evernote_Nviginia.pem" ec2-user@ec2-54-172-146-191.compute-1.amazonaws.com "hostname -f"
+ 
+ # Run 4/4
+
+ ./testHosts.sh cluster-hosts.txt "evernote_NCalifornia.pem" > all_host_info.txt
+ 
+## Output: all_host_info.txt and csv (copy paste)
+hosts file format:
+internal internal_dsn name
+replace spaces
+
+2. Set up hosts in the ambari node (Go to 3 directly)
+
+100+100+100+1024+1024G
+
+ssh -i "evernote_Nviginia.pem" ec2-user@ec2-54-172-146-191.compute-1.amazonaws.com
+
+2.1 Copy the pem to ambari
+scp -i evernote_Nviginia.pem evernote_Nviginia.pem ec2-user@ec2-54-172-146-191.compute-1.amazonaws.com:
+scp -i evernote_Nviginia.pem evernote_Nviginia.pem ec2-user@ec2-54-172-146-191.compute-1.amazonaws.com:.ssh/evernote_Nviginia.pem
+
+2.2 Permission
+[ec2-user@ip-10-0-0-92 ~]$ chmod 600 .ssh/evernote_Nviginia.pem
+
+2.3 Host file
+scp -i evernote_Nviginia.pem hosts ec2-user@ec2-54-172-146-191.compute-1.amazonaws.com:
+
+sudo cp hosts /etc/hosts
+sudo vi /etc/hosts
+
+## test connection ## security group configuration include all machines
+ping ambari
+ping nn1
+## get ip address for all nodes
+cat /etc/hosts | xargs -L 1 -I xx grep xx /etc/hosts | awk '!/localhost/ {print$1}' > clusterHostIps.txt
+
+3. Set up hosts in all nodes: Run this in the public not internal
+
+./allHosts_ip.sh cluster-hosts.txt "evernote_Nviginia.pem"
+ # give permissions 1/4
+ chmod u+x ./allHosts_ip.sh
+ 
+ # 2/4 http://stackoverflow.com/questions/17131249/how-to-solve-bad-interpreter-no-such-file-or-directory
+ perl -i -pe 'y|\r||d' allHosts_ip.sh
+ 
+ # test 3/4 in internal internet
+
+  ssh -t -o StrictHostKeyChecking=no -i "evernote_Nviginia.pem" ec2-user@10.0.0.111 "hostname -f";
+  scp -o StrictHostKeyChecking=no -i "evernote_Nviginia.pem" hosts ec2-user@10.0.0.111:hosts
+  ssh -t -o StrictHostKeyChecking=no -i "evernote_Nviginia.pem" ec2-user@10.0.0.111 "sudo cp /etc/hosts /etc/hosts.bak; sudo cp ~/hosts /etc/hosts";
+	
+	## test b:10.0.0.112
+  ssh -t -oStrictHostKeyChecking=no -i "evernote_Nviginia.pem" ec2-user@10.0.0.112 "hostname -f";
+  scp -oStrictHostKeyChecking=no -i "evernote_Nviginia.pem" /etc/hosts ec2-user@10.0.0.112:hosts
+  ssh -t -oStrictHostKeyChecking=no -i "evernote_Nviginia.pem" ec2-user@10.0.0.112 "sudo cp /etc/hosts /etc/hosts.bak; sudo cp ~/hosts /etc/hosts";
+	
+ # Run 4/4 in public internet
+	./allHosts_ip.sh cluster-hosts.txt "evernote_Nviginia.pem"
+	./allHosts_ip.sh cluster-hosts.txt "evernote_NCalifornia.pem"
+	## dont use clusterhostIps.txt because it's internal
+	ssh to one node and check the /etc/hosts
+
+4. Set up all nodes
+4.1 Configuration. See the prepareNode.sh. add sudo for some functions.Set umask in all nodes: both ambari and others
+
+test1: ssh -i evernote_nviginia.pem ec2-user@ec2-54-172-146-191.compute-1.amazonaws.com
+
+
+
+
+ssh -i evernote_nviginia.pem ec2-user@ec2-54-174-89-10.compute-1.amazonaws.com
+ssh -i evernote_nviginia.pem ec2-user@ec2-54-175-108-194.compute-1.amazonaws.com
+ssh -i evernote_nviginia.pem ec2-user@ec2-52-91-163-29.compute-1.amazonaws.com
+ssh -i evernote_nviginia.pem ec2-user@ec2-54-165-238-55.compute-1.amazonaws.com
+test3: ssh -i evernote_nviginia.pem ec2-user@ec2-52-91-98-70.compute-1.amazonaws.com
+test2: ssh -i evernote_nviginia.pem ec2-user@ec2-54-174-254-216.compute-1.amazonaws.com
+
+4.2 Run the runParallelprep.sh for all nodes. 
+Not well written script. So we simply use  prepareNode.sh and cpy paste to each node.
+
+ # give permissions 1/4
+ chmod u+x ./runParallelprep.sh
+ chmod u+x ./prepareNode.sh
+ # 2/4 http://stackoverflow.com/questions/17131249/how-to-solve-bad-interpreter-no-such-file-or-directory
+ perl -i -pe 'y|\r||d' runParallelprep.sh
+ perl -i -pe 'y|\r||d' prepareNode.sh
+
+
+
+chmod u+x ./test_final_step.sh
+perl -i -pe 'y|\r||d' test_final_step.sh
+
+5. Install ambari on ambari
+## R7
+http://docs.hortonworks.com/HDPDocuments/Ambari-2.1.2.0/bk_Installing_HDP_AMB/content/_start_the_ambari_server.html
+wget -nv http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.1.2/ambari.repo -O /etc/yum.repos.d/ambari.repo
+
+ sudo yum repolist
+ sudo yum install ambari-server
+ sudo ambari-server setup
+ sudo ambari-server start
+
+
+## R6
+double check 
+vi /etc/selinux/config
+
+## follow the updated doc http://docs.hortonworks.com/HDPDocuments/Ambari-2.1.2.0/bk_Installing_HDP_AMB/content/ch_Getting_Ready.html
+# https://cwiki.apache.org/confluence/display/AMBARI/Installation+Guide+for+Ambari+2.1.2
+
+wget -nv http://public-repo-1.hortonworks.com/ambari/centos6/2.x/updates/2.1.2/ambari.repo -O /etc/yum.repos.d/ambari.repo
+
+#wget http://public-repo-1.hortonworks.com/ambari/centos6/1.x/updates/1.6.0/ambari.repo
+#sudo cp ambari.repo /etc/yum.repos.d
+
+ sudo yum repolist
+ sudo yum install ambari-server
+ sudo ambari-server setup
+ sudo ambari-server start
+
+6. reboot. Trouble starting Ambari on system reboot
+
+If you reboot your cluster, you must restart the Ambari Server and all the Ambari Agents manually.
+ 3.8.1. Solution:
+
+Log in to each machine in your cluster separately
+
+    On the Ambari Server host machine:
+
+    sudo ambari-server restart
+
+    On each host in your cluster:
+
+    sudo ambari-agent restart
+    
+
+### Assignment #1 ReWrite
+
+bigwhite@
+wget https://www.gutenberg.org/ebooks/100.txt.utf-8
+scp -i evernote_NCalifornia.pem 100.txt.utf-8 ec2-user@ec2-54-183-251-26.us-west-1.compute.amazonaws.com:
+
+
+sudo -u hdfs hadoop fs -copyFromLocal 100.txt.utf-8 /user/guest
+
+yarn jar /usr/hdp/2.3.0.0-2557/hadoop-mapreduce/hadoop-mapreduce-examples.jar wordcount /user/guest/100.txt.utf-8 /user/guest/wordcount
+grep 'Paris\s' part-r-00000
+hadoop fs -copyToLocal /user/guest/wordcount/part-r-00000 assignment1_out.txt
+
+scp -P 2222  root@127.0.0.1:wordcount_out /users/wenxiao/documents/d/dropbox/bigdata/aws_hdp
+scp -P 2222  root@127.0.0.1:100.txt.utf-8 /users/wenxiao/documents/d/dropbox/bigdata/aws_hdp/100.txt.utf-8_2
+scp -P 2222  root@127.0.0.1:assignment1_out.txt /users/wenxiao/documents/d/dropbox/bigdata/aws_hdp/assignment1_out.txt
+

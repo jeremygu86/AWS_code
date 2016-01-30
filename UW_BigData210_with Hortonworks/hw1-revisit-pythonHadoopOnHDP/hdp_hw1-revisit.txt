@@ -1,0 +1,300 @@
+## Map Reduce job on both python and java
+
+
+
+
+
+scp -i evernote_ncalifornia.pem wordcount_mapper.py ec2-user@ec2-54-193-42-240.us-west-1.compute.amazonaws.com:test
+scp -i evernote_ncalifornia.pem wordcount_reducer.py ec2-user@ec2-54-193-42-240.us-west-1.compute.amazonaws.com:test
+
+
+hadoop fs -mkdir /user/guest
+hadoop fs -mkdir /user/guest/test
+
+
+
+## test before running hadoop
+echo "A long time ago in a galaxy far far away" >testfile1 
+echo "Another episode of Star Wars" > testfile2 
+cat testfile* | ./wordcount_mapper.py  | sort | ./wordcount_reducer.py 
+## 
+
+
+## test before running hadoop
+cat 100.txt.utf-8 | ./wordcount_mapper.py | ./wordcount_reducer.py 
+
+
+hdfs dfs -put testfile* /user/guest/test
+
+yarn jar /usr/hdp/2.3.2.0-2950/hadoop-mapreduce/hadoop-streaming.jar \
+   -input /user/guest/test  \
+   -output /user/guest/test_out \
+   -mapper /home/ec2-user/test/wordcount_mapper.py \
+   -reducer /home/ec2-user/test/wordcount_reducer.py
+
+## works
+yarn jar /usr/hdp/2.3.2.0-2950/hadoop-mapreduce/hadoop-mapreduce-examples.jar \
+wordcount \
+/user/guest/test/ \
+/user/guest/test_out2
+hdfs dfs -cat /user/guest/test_out2/part-r-00000
+
+## next change mapper http://www.michael-noll.com/tutorials/writing-an-hadoop-mapreduce-program-in-python/#map-step-mapperpy
+maybe need other python support
+
+## 
+mkdir mnoll_python
+cd mnoll_python
+
+## test
+cat testfile* | ./mnoll_mapper.py  | sort | ./mnoll_reducer.py 
+cat 100.txt.utf-8 | ./mnoll_mapper.py | ./mnoll_reducer.py 
+
+## improved mapper and reducer
+cat testfile* | ./mnoll_mapper_imp.py  | sort | ./mnoll_reducer_imp.py 
+cat 100.txt.utf-8 | ./mnoll_mapper_imp.py | ./mnoll_reducer_imp.py 
+
+scp -r -i "evernote_NCalifornia.pem" mnoll_python/. ec2-user@ec2-54-193-42-240.us-west-1.compute.amazonaws.com:mnoll_python
+
+
+ssh -i "evernote_NCalifornia.pem" ec2-user@54.193.42.240
+
+## ec2-user
+mkdir mnoll_python
+cd mnoll_python
+
+
+## Two sets of data
+
+Copy local example data1 to HDFS
+hdfs dfs -mkdir /user/guest/testfile
+# hdfs dfs -put testfile* /user/guest/testfile
+hdfs dfs -copyFromLocal testfile* /user/guest/testfile
+hdfs dfs -ls /user/guest/testfile
+
+Copy local example data2 to HDFS
+hdfs dfs -mkdir /user/guest/utf_input
+hdfs dfs -put 100.txt.utf-8 /user/guest/utf_input
+# hdfs dfs -copyFromLocal testfile* /user/guest/utf_input
+hdfs dfs -ls /user/guest/utf_input
+
+
+## Two sets of hadoop wordcount jobs
+## 1/2 Java Run the MapReduce job
+yarn jar /usr/hdp/2.3.2.0-2950/hadoop-mapreduce/hadoop-mapreduce-examples.jar \
+wordcount \
+/user/guest/testfile/ \
+/user/guest/testfile_out
+# hdfs dfs -rm -r /user/guest/testfile_out
+
+hdfs dfs -cat /user/guest/testfile_out/part-r-00000
+
+## 2/2 Python
+
+chmod a+x mnoll_mapper.py
+chmod a+x mnoll_reducer.py
+
+## Finally works!
+
+## Issue 1: permission 
+##http://hortonworks.com/community/forums/topic/permission-error-on-hdfs-user-folder/
+##change ambari's HDFS's hdfs-site.xml and try ( Restart the services after changes).
+## In Ambari: http://ec2-54-213-116-12.us-west-2.compute.amazonaws.com:8080/#/main/services/HDFS/configs
+
+##<property>
+##<name>dfs.permissions.enabled</name>
+##<value>false</value>
+##<description>
+
+## Issue 2: python
+## http://stackoverflow.com/questions/25516805/hadoop-streaming-job-failure-python
+## http://stackoverflow.com/questions/32735668/permission-denied-error-13-python-on-hadoop
+## http://www.michael-noll.com/tutorials/writing-an-hadoop-mapreduce-program-in-python/
+
+## first line use yarn will work too: yarn jar /usr/hdp/2.3.2.0-2950/hadoop-mapreduce/hadoop-streaming.jar \ 
+## the streaming option -file must be included, but -files doesn't work because it's not a streaming option.
+## official streaming: https://hadoop.apache.org/docs/r2.7.1/hadoop-streaming/HadoopStreaming.html
+
+hadoop jar /usr/hdp/2.3.2.0-2950/hadoop-mapreduce/hadoop-streaming.jar \
+   -input /user/guest/testfile  \
+   -output /user/guest/testfile_out_py \
+   -file /home/ec2-user/mnoll_python/mnoll_mapper.py \
+   -mapper /home/ec2-user/mnoll_python/mnoll_mapper.py \
+   -file /home/ec2-user/mnoll_python/mnoll_reducer.py  \
+   -reducer /home/ec2-user/mnoll_python/mnoll_reducer.py
+
+hdfs dfs -rm -r /user/guest/testfile_out_py
+hdfs dfs -cat /user/guest/testfile_out/part-r-0000
+
+
+## 2/2B Java Run the MapReduce job (Don't run it yet)
+yarn jar /usr/hdp/2.3.2.0-2950/hadoop-mapreduce/hadoop-mapreduce-examples.jar \
+wordcount \
+/user/guest/utf_input/ \
+/user/guest/utf_input_out
+# hdfs dfs -rm -r /user/guest/utf_input_out
+
+hdfs dfs -cat /user/guest/utf_input_out/part-r-00000
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+######## previous
+
+
+
+## bigwhite@
+wget https://www.gutenberg.org/ebooks/100.txt.utf-8
+ssh -i evernote_ncalifornia.pem ec2-user@ec2-54-193-42-240.us-west-1.compute.amazonaws.com
+scp -i evernote_ncalifornia.pem 100.txt.utf-8 ec2-user@ec2-54-193-42-240.us-west-1.compute.amazonaws.com:hw1_revisit
+
+
+the new way:
+http://hortonworks.com/community/forums/topic/permission-error-on-hdfs-user-folder/
+change ambari's HDFS's hdfs-site.xml and try ( Restart the services after changes).
+
+<property>
+<name>dfs.permissions.enabled</name>
+<value>false</value>
+<description>
+
+
+export HADOOP_HOME=/usr/hdp/current/hadoop-client
+cp /usr/hdp/2.3.2.0-2950/hadoop-mapreduce/hadoop-streaming.jar $HADOOP_HOME
+
+The old way below have permission issues
+
+
+
+
+
+
+
+
+
+
+
+
+## hortonworks
+
+mkdir hw1_revisit
+cd hw1_revisit
+
+
+hadoop fs -ls /user
+
+[ec2-user@ip-10-0-0-214 home]$ hadoop fs -mkdir /user/guest
+mkdir: Permission denied: user=ec2-user, access=WRITE, inode="/user/guest":hdfs:hdfs:drwxr-xr-x
+
+[ec2-user@ip-10-0-0-214 home]$ sudo su
+[root@ip-10-0-0-214 home]# hadoop fs -mkdir /user/guest
+mkdir: Permission denied: user=root, access=WRITE, inode="/user/guest":hdfs:hdfs:drwxr-xr-x
+
+# solution:http://www.zackriesland.com/2014/12/permission-denied-by-hdfs/
+
+## ec2-user
+cd /
+sudo chown hdfs /home/ec2-user
+sudo chown hdfs /home/ec2-user/hw1_revisit
+## hdfs
+sudo su
+su hdfs
+
+hadoop fs -mkdir /user/guest
+hadoop fs -mkdir /user/guest/hw_revisit
+
+exit
+exit
+
+hadoop fs -copyFromLocal 100.txt.utf-8  /user/guest/hw_revisit
+
+## find the hadoop directory
+ls /usr/hdp/
+# 2.3.2.0-2950
+yarn jar /usr/hdp/2.3.2.0-2950/hadoop-mapreduce/hadoop-mapreduce-examples.jar \
+wordcount \
+/user/guest/hw_revisit/100.txt.utf-8 \
+/user/guest/hw_revisit/wordcount
+hdfs dfs -cat /user/guest/hw_revisit/wordcount/part-r-00000
+
+## Works!!
+## also try the python code on AWS Clusters
+
+
+
+## root
+sudo chown ec2-user /home/ec2-user
+
+## Copy Pythons
+scp -i evernote_ncalifornia.pem wordcount_mapper.py ec2-user@ec2-54-193-42-240.us-west-1.compute.amazonaws.com:hw1_revisit
+scp -i evernote_ncalifornia.pem wordcount_reducer.py ec2-user@ec2-54-193-42-240.us-west-1.compute.amazonaws.com:hw1_revisit
+
+#### --------- Copy from the Cloudera homework 
+## root
+sudo su
+chmod +x wordcount_mapper.py 
+chmod +x wordcount_reducer.py 
+chown ec2-user wordcount_mapper.py
+chown ec2-user wordcount_reducer.py
+
+su hdfs
+## hdfs
+
+hadoop fs -mkdir /user/guest/input 
+
+hdfs dfs -put 100.txt.utf-8 /user/guest/input 
+hdfs dfs -ls /user/guest/input 
+
+chmod u+x wordcount_mapper.py 
+chmod u+x wordcount_reducer.py 
+
+### HORTONWORKS SETUP: http://hortonworks.com/blog/using-r-and-other-non-java-languages-in-mapreduce-and-hive/
+## missing: http://wiktorski.github.io/blog/using-mrjob-with-hortonworks-sandbox/
+
+
+
+# sandbox ## works
+/usr/hdp/2.3.0.0-2557/hadoop-mapreduce/hadoop-streaming.jar
+#2.3.2.0-2950
+
+## test before running hadoop
+echo "A long time ago in a galaxy far far away" >testfile1 
+echo "Another episode of Star Wars" > testfile2 
+cat testfile* | ./wordcount_mapper.py  | sort | ./wordcount_reducer.py 
+## 
+
+## test before running hadoop
+cat 100.txt.utf-8 | ./wordcount_mapper.py | ./wordcount_reducer.py 
+
+yarn jar /usr/hdp/2.3.2.0-2950/hadoop-mapreduce/hadoop-streaming.jar \
+   -input /user/guest/input  \
+   -output /user/guest/output_new \
+   -mapper /home/ec2-user/hw1_revisit/wordcount_mapper.py \
+   -reducer /home/ec2-user/hw1_revisit/wordcount_reducer.py
+
+
+## delete the folder otherwise will see the error
+# hdfs dfs -rm -r /user/guest/output_new
+
+## List and read the output
+hdfs dfs -ls output_new
+hdfs dfs -cat /user/cloudera/output_new/part-00000
+
+
+
+
+
+

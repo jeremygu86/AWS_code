@@ -1,0 +1,159 @@
+wget http://archive.cloudera.com/cm4/installer/latest/cloudera-manager-installer.bin
+chmod +x cloudera-manager-installer.bin
+$ sudo ./cloudera-manager-installer.bin
+
+# hortonworks http://hortonworks.com/blog/deploying-hadoop-cluster-amazon-ec2-hortonworks/
+sudo chkconfig ntpd on
+sudo chkconfig iptables off
+sudo /etc/init.d/iptables stop
+sudo service ntpd start
+##sudo setenforce 0
+
+## on ec2
+mv evernote_NCalifornia.pem ./.ssh/id_rsa
+
+sudo su
+wget http://public-repo-1.hortonworks.com/ambari/centos5/1.x/updates/1.4.3.38/ambari.repo
+
+cp ambari.repo /etc/yum.repos.d
+yum repolist
+yum install ambari-server
+
+ambari-server setup
+ambari-server restart
+
+
+## Instruction
+## EC2+SECURITY GROUP
+
+## bigwhite
+ssh -i "evernote_NCalifornia.pem" ec2-user@54.193.42.67
+# ip-172-31-11-232.us-west-1.compute.internal
+scp -i evernote_NCalifornia.pem evernote_NCalifornia.pem ec2-user@ec2-54-193-42-67.us-west-1.compute.amazonaws.com:
+
+## ec2
+##ssh-keygen -t rsa
+cp evernote_NCalifornia.pem ./.ssh/id_rsa
+
+cp evernote_NCalifornia.pem /root/.ssh/id_rsa.pub
+cp evernote_NCalifornia.pem /root/.ssh/id_rsa
+
+scp -i evernote_NCalifornia.pem ./id_rsa.pub ec2-user@54.193.53.153:/root/.ssh/
+
+
+##sudo vim /etc/sysconfig/selinux (set SELINUX=disabled)
+##http://stackoverflow.com/questions/11828270/how-to-exit-the-vim-editor
+##sudo vim /etc/sysconfig/network 
+##shutdown -r now
+
+vim /etc/hosts
+cp /etc/hosts ec2-user@hdpmaster1:
+
+
+## security group!!
+http://ec2-54-193-42-67.us-west-1.compute.amazonaws.com:8080/#/installer/step0
+
+
+
+
+cp ambari.repo /etc/yum.repos.d
+yum repolist
+yum install ambari-server
+
+
+## SLAVE 0, -->1,2,3,4
+
+ssh -i "evernote_NCalifornia.pem" ec2-user@54.193.53.153
+scp -i evernote_NCalifornia.pem evernote_NCalifornia.pem ec2-user@ec2-54-193-53-153.us-west-1.compute.amazonaws.com:
+
+
+
+scp -i evernote_NCalifornia.pem hosts ec2-user@ec2-54-193-42-67.us-west-1.compute.amazonaws.com:
+scp -i evernote_NCalifornia.pem hosts ec2-user@ec2-54-193-53-153.us-west-1.compute.amazonaws.com:
+scp -i evernote_NCalifornia.pem hosts ec2-user@ec2-54-215-128-97.us-west-1.compute.amazonaws.com:
+scp -i evernote_NCalifornia.pem hosts ec2-user@ec2-54-215-128-82.us-west-1.compute.amazonaws.com:
+scp -i evernote_NCalifornia.pem hosts ec2-user@ec2-54-215-128-92.us-west-1.compute.amazonaws.com:
+
+ssh -i "evernote_NCalifornia.pem" ec2-user@54.193.53.153
+ssh -i "evernote_NCalifornia.pem" ec2-user@54.215.128.97
+ssh -i "evernote_NCalifornia.pem" ec2-user@54.215.128.82
+ssh -i "evernote_NCalifornia.pem" ec2-user@54.215.128.92
+
+sudo cp hosts /etc/hosts
+
+
+ambarimaster
+ip-172-31-11-232.us-west-1.compute.internal
+hdpmaster1
+ip-172-31-11-133.us-west-1.compute.internal
+hdpmaster2
+ip-172-31-5-196.us-west-1.compute.internal
+hdpslave1
+ip-172-31-5-194.us-west-1.compute.internal
+hdpslave2
+ip-172-31-5-195.us-west-1.compute.internal
+
+172.31.11.232 ambarimaster.hdp.hadoop ambarimaster
+172.31.11.133 hdpmaster1.hdp.hadoop hdpmaster1
+172.31.5.196 hdpmaster2.hdp.hadoop hdpmaster2
+172.31.5.194 hdpslave1.hdp.hadoop hdpslave1
+172.31.5.195 hdpslave2.hdp.hadoop hdpslave2
+
+ambarimaster.hdp.hadoop
+hdpmaster1.hdp.hadoop
+hdpmaster2.hdp.hadoop 
+hdpslave1.hdp.hadoop
+hdpslave2.hdp.hadoop
+
+
+
+ ssh -i evernote_NCalifornia.pem -ND 8157 hadoop@ec2-54-193-5-94.us-west-1.compute.amazonaws.com
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+### Assignment #1
+
+bigwhite@
+wget https://www.gutenberg.org/ebooks/100.txt.utf-8
+scp -P 2222 100.txt.utf-8 root@127.0.0.1:
+
+root@
+ssh root@127.0.0.1 -p 2222
+password: hadoop
+# wget https://www.gutenberg.org/ebooks/100.txt.utf-8
+hadoop fs -copyFromLocal 100.txt.utf-8 /user/guest
+
+
+
+
+yarn jar /usr/hdp/2.3.0.0-2557/hadoop-mapreduce/hadoop-mapreduce-examples.jar wordcount /user/guest/100.txt.utf-8 /user/guest/wordcount
+grep 'Paris\s' part-r-00000
+hadoop fs -copyToLocal /user/guest/wordcount/part-r-00000 assignment1_out.txt
+
+scp -P 2222  root@127.0.0.1:wordcount_out /users/wenxiao/documents/d/dropbox/bigdata/aws_hdp
+scp -P 2222  root@127.0.0.1:100.txt.utf-8 /users/wenxiao/documents/d/dropbox/bigdata/aws_hdp/100.txt.utf-8_2
+scp -P 2222  root@127.0.0.1:assignment1_out.txt /users/wenxiao/documents/d/dropbox/bigdata/aws_hdp/assignment1_out.txt
+
+
+
+
+
+## reference:
+http://www.folkstalk.com/2013/09/hadoop-fs-shell-command-example-tutorial.html
+Hands-on Hadoop Tutorial with Hortonworks SandBox VM part 1: the Boss Edition 
+
+
+
+## 2015/11/14
+Spot Instances
+HDP Ubuntu Linux 14.04
+
+

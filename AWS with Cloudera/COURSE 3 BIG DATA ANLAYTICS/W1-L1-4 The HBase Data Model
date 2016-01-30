@@ -1,0 +1,40 @@
+==The HBase Data Model==
+
+
+
+So let's look at now at
+the HBase Data Model. What is the underlying data model that allows us to use all of these
+interesting features about HBase. Well, as we have mentioned before,
+it is based on the Google's BigTable idea. BigTable is distributed storage system for managing structured data designed
+to scale to a very large size. It was started at Google and
+the original paper was published in 2006, because Google was collecting all of
+this information from the web and was having serious challenges
+in being able to process and store this large amount of data. So this challenge is come from
+the traditional RDBMS system or a relational database management system. There are great for transactions and
+processing but when it comes to very large analytics type processing of data
+the solution becomes really expensive, they have to be specialized and
+it's really difficult to be able to have scalable
+systems with good performance. So when we talk about large
+scale analytical processing, we're talking about really large queries. These typically range in, they're
+typically executed in databases that are 100 terabytes, petabytes and
+now we even talk about zetabytes of data. And when we do these kinds
+of analytics queries, we typically put some kind of a range
+in there or we have to do a table scan, and then you can imagine if you
+have this very large amount of data that becomes really difficult
+to do in an efficient manner. So BigTable is very similar to a database,
+but is not a full relational data model. Data is indexed by using rows and
+columns of these tables. And as you can imagine,
+it does use MapReduce for the underlying computational framework. So if you think about big data,
+it is a very large, often very sparse distributed,
+persistent, multidimensional, sorted map. It sounds very similar to the definition
+we just saw a little bit earlier for H base. As I have said, H base is very
+much reliant on the big data, technologies, and framework. So, if you think about the tables
+that are designed as a big table, they have three major dimensions. We're talking about rows,
+columns, and timestamps. And you can see here, these rows and
+columns and timestamps are very, very important to define these
+three dimensions of the table. Each cell in the table is
+referenced by a particular row key, by a particular column key, and a timestamp when that particular
+value has been put into that table. So you can see here in this picture
+that we have a row that had an the information about the column
+it's in and the timestamp and which point of time that particular
+value was inserted into that table.
